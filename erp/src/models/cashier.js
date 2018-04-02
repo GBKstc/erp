@@ -26,19 +26,21 @@ const Cashier={
     },
     effects:{
         * queryUser({},{ call,put }){
-            const { data }=yield call(request,'/api/users',{ method:'GET' });
+            const { data }=yield call(request,{ url:'/api/users',method:'GET' });
             yield put({type:'saveUser',payload:{ data }});
         },
         * queryCustomer({},{ call,put }){
             const { data }=yield call(getCustomerList);
-            yield put({type:'save',payload:{ data }});
+            console.log(data);
+            yield put({type:'saveCustomer',payload:{ data }});
         },
         * create({ payload:{ user } },{ call,put }){
-            yield call(request,'/api/users',{ 
+            yield call(request,{ 
+                url:'/api/users',
                 body:JSON.stringify(user),
                 method:'POST'
             });
-            yield put({type:'query',payload:{  }});
+            yield put({type:'queryUser',payload:{  }});
         }
     }, 
     subscriptions:{

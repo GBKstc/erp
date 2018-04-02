@@ -1,6 +1,8 @@
 import { connect } from 'dva';
 import { Row, Col } from 'antd';
 import styles from './CustomerList.less';
+import {variable} from '../../utils';
+const {isEmpty} = variable;
 const CustomerDetalis = ({customerDetalis,dispatch}) => {
 
     // const {
@@ -15,10 +17,10 @@ const CustomerDetalis = ({customerDetalis,dispatch}) => {
 
     //     departname,
     // } = customerDetalis;
-    console.log(customerDetalis);
-
+    console.log(isEmpty(customerDetalis));
+    const isShow = isEmpty(customerDetalis);
     return (
-        <Row type="flex" align="middle" style={{backgroundColor:"rgb(245,245,245)"}}>
+        <Row type="flex" align="middle" style={isShow?{display:'none'}:{backgroundColor:"rgb(245,245,245)"}}>
             <Col span={24} style={{backgroundColor:"rgb(255,255,255)"}} className={styles.details}>
                 <Row type="flex" align="middle"> 
                     <Col span={4}>
@@ -69,7 +71,7 @@ const CustomerDetalis = ({customerDetalis,dispatch}) => {
                                 </Row>
                             </Col>
                         </Row>
-
+                        
                         <Row>
                             <Col span={2}></Col>
                             <Col span={2}>开始服务</Col>

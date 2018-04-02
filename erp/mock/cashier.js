@@ -104,6 +104,7 @@ let customerDetalis = {
             "roomname": " 藏红花（1号房）"
         };
 
+
 let customerListData=Mock.mock({
     'data':customerList
 });

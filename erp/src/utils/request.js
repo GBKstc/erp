@@ -12,8 +12,8 @@ const checkStatus=(response)=>{
     throw error;
 };
 
-export default async function request(url,options={}) {
-    
+export default async function request({url,...options}) {
+    console.log(url);
     options.headers={
         'Content-Type':'application/json'
     }

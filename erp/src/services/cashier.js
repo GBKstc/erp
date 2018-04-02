@@ -1,4 +1,4 @@
-import { request, config } from '../utils'
+import { request, config, variable } from '../utils'
 
 const { api } = config
 const { 
@@ -7,6 +7,7 @@ const {
 } = api
 
 export function getCustomerList () {
+  console.log(get_customer_list);
   return request({
     url: get_customer_list,
     method: 'post',
