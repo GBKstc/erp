@@ -14,15 +14,15 @@ const RouterConfig = function ({ history,app }) {
 
   const Cashier = dynamic({
     app,
-    models:()=>[import('./models/user')],
+    models:()=>[import('./models/cashier')],
     component: () => import('./routes/Cashier'),
   });
 
-  const Users = dynamic({
-    app,
-    models:()=>[import('./models/user')],
-    component: () => import('./routes/usersPage'),
-  });
+  // const Users = dynamic({
+  //   app,
+  //   models:()=>[import('./models/user')],
+  //   component: () => import('./routes/usersPage'),
+  // });
 
 
   return (

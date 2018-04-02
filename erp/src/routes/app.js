@@ -9,7 +9,7 @@ const App = ({
 
     return (
         <Layout>
-            <Header className="header">
+            <Header className={styles.header}>
                 <div className={styles.logo} >
                     <img className={styles.logoImg} src= "http://ruocha.oss-cn-shanghai.aliyuncs.com/erp/ERP-head/img/logo.png"/>
                     <img className={styles.logoImg} src= "http://ruocha.oss-cn-shanghai.aliyuncs.com/erp/ERP-head/img/logo_letter.png"/>
@@ -19,7 +19,7 @@ const App = ({
                     theme="dark"
                     mode="horizontal"
                     defaultSelectedKeys={['1']}
-                    style={{ lineHeight: '64px' }}
+                    style={{ lineHeight: '50px',fontSize: '18px' }}
                 >
                     <Menu.Item key="1">收银</Menu.Item>
                     <Menu.Item key="2">顾客</Menu.Item>

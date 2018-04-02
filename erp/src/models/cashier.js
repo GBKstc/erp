@@ -1,23 +1,36 @@
 import request from '../utils/request';
-const User={
-    namespace:"user",
+import { getCustomerList,getCustomerById } from '../services/cashier'
+
+const Cashier={
+    namespace:"cashier",
 
     state:{
         list:[],
-        visibleModal:false
+        visibleModal:false,
+        customerList: [],
+        customerDetalis: {},
     },
     reducers:{
-        save(state,{ payload:{ data:list } }){
-
+        saveUser(state,{ payload:{ data:list } }){
             return {
                 ...state,
                 list
             };
+        },
+        saveCustomer(state,{ payload:{ data:customerList } }){
+            return {
+                ...state,
+                customerList
+            };
         }
     },
     effects:{
-        * query({},{ call,put }){
+        * queryUser({},{ call,put }){
             const { data }=yield call(request,'/api/users',{ method:'GET' });
+            yield put({type:'saveUser',payload:{ data }});
+        },
+        * queryCustomer({},{ call,put }){
+            const { data }=yield call(getCustomerList);
             yield put({type:'save',payload:{ data }});
         },
         * create({ payload:{ user } },{ call,put }){
@@ -35,10 +48,11 @@ const User={
             return history.listen(({ pathname,search })=>{
 
                 console.log(`pathname: ${pathname}`);
-                dispatch({ type:'query'});
+                dispatch({ type:'queryUser'});
+                dispatch({ type:'queryCustomer'});
             });
         }
     }
 };
 
-export default User;
+export default Cashier;

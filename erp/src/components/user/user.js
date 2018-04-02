@@ -2,11 +2,11 @@ import { Table,Button } from 'antd';
 import { connect } from 'dva';
 import UserModal from './create';
 
-const UserTable = ({ list,dispatch }) => {
+const UserTable = ({ list,visibleModal,dispatch }) => {
 
     const createUser=(user)=>{
         dispatch({
-            type:'user/create',
+            type:'cashier/create',
             payload:{
                 user
             }
@@ -43,10 +43,4 @@ const UserTable = ({ list,dispatch }) => {
     );
 };
 
-export default connect(({ user }) => {
-
-    console.log(user);
-    return {
-        list: user.list
-    };
-})(UserTable);
+export default connect(({cashier}) => (cashier))(UserTable);
