@@ -14,4 +14,4 @@ const Pay = (aaaa) => {
     );
 };
 
-export default connect(({app,pay})=>({app}))(Pay);
+export default connect(({cashier,app,pay})=>({cashier,app,pay}))(Pay);
