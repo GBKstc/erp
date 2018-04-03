@@ -2,22 +2,13 @@ import { connect } from 'dva';
 import { Row, Col } from 'antd';
 import styles from './CustomerList.less';
 import {variable} from '../../utils';
+import { Link } from 'dva/router';
+
+
+
 const {isEmpty} = variable;
 const CustomerDetalis = ({customerDetalis,dispatch}) => {
-
-    // const {
-    //     servicecode,
-    //     roomname,
-    //     servicestatus,
-        
-    //     customername,
-    //     customermobile,
-    //     cardno,
-    //     cardrankname,
-
-    //     departname,
-    // } = customerDetalis;
-    console.log(isEmpty(customerDetalis));
+    // console.log(match);
     const isShow = isEmpty(customerDetalis);
     return (
         <Row type="flex" align="middle" style={isShow?{display:'none'}:{backgroundColor:"rgb(245,245,245)"}}>
@@ -75,7 +66,7 @@ const CustomerDetalis = ({customerDetalis,dispatch}) => {
                         <Row>
                             <Col span={2}></Col>
                             <Col span={2}>开始服务</Col>
-                            <Col span={2}>充值</Col>
+                            <Col span={2}><Link to= '/cashier/pay'>充值</Link></Col>
                             <Col span={2}>补充值</Col>
                             <Col span={2}>取货</Col>
                             <Col span={2}>退货</Col>

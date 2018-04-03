@@ -3,8 +3,7 @@ import {Cashier} from '../../components';
 
 const {CustomerList,CustomerDetalis} = Cashier;
 
-const StoreService = () => {
-
+const StoreService = ({}) => {
     return (
         <div>
             <CustomerList/>

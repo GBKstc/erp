@@ -1,34 +1,47 @@
 import React from 'react'
 import { connect } from 'dva';
-import { Row, Col, Menu } from 'antd';
+import { Row, Col } from 'antd';
 import styles from './CustomerList.less';
+import { variable } from "../../utils";
 
-const SubMenu = Menu.SubMenu;
-const MenuItem = Menu.Item;
+const {
+    isEmpty
+} = variable;
+
 
 class CustomerList extends React.Component{
     constructor (props) {
         super(props)
-        console.log(props);
         const {
             customerList,
-            dispatch
+            isSelect,
         } = props;
         
         this.state = {
             customerList,
+            isSelect,
         }
     }
 
-    onClick(serviceid){
-        console.log(serviceid);
-        
+    onClick(serviceid, key){
+        this.props.dispatch({ 
+            type: 'cashier/getCustomerById',
+            payload: {
+                serviceid
+            }
+        });
+        this.props.dispatch({ 
+            type: 'cashier/selectCustomer',
+            payload: {
+                key
+            }
+        });
     }
 
     render(){
         const customerShow = this.state.customerList.map(
             ({customername,customermobile,servicestatus,serviceid}, key)=>(
-                    <Col className={styles.card} span={7} offset={1} key={key} onClick={this.onClick.bind(this,serviceid)}>
+                    <Col className={this.state.isSelect[key]?styles.select:styles.card} span={7} offset={1} key={key} onClick={this.onClick.bind(this,serviceid,key)}>
                         <Col span={8} >{customername}</Col>
                         <Col span={8} >{customermobile}</Col>
                         <Col span={8} >{servicestatus=0?"服务中":"服务完成"}</Col>

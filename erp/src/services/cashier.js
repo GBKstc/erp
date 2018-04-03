@@ -1,12 +1,18 @@
-import { request, config, variable } from '../utils'
+import {
+  request,
+  config,
+  variable
+} from '../utils'
 
-const { api } = config
-const { 
-    get_customer_list, 
-    get_customerById 
+const {
+  api
+} = config
+const {
+  get_customer_list,
+  get_customerById
 } = api
 
-export function getCustomerList () {
+export function getCustomerList() {
   console.log(get_customer_list);
   return request({
     url: get_customer_list,
@@ -14,7 +20,8 @@ export function getCustomerList () {
   })
 }
 
-export function getCustomerById (params) {
+export function getCustomerById(params) {
+  console.log(params);
   return request({
     url: get_customerById,
     method: 'post',

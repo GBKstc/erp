@@ -12,11 +12,12 @@ const Cashier = ({
     //到店服务
     const StoreService = dynamic({
         app,
-        component: () => import('./storeService'),
+        component: () => import('./StoreService'),
     });
-    const Users = dynamic({
+    //充值
+    const Pay = dynamic({
         app,
-        component: () => import('../usersPage'),
+        component: () => import('./Pay'),
     });
     return (
         <Layout>
@@ -39,8 +40,8 @@ const Cashier = ({
                 </Breadcrumb>
                 <Content style={{ background: 'rgb(245,245,245)', margin: 0, minHeight: 560 }}>
                 <Switch>
-                    <Route exact path={match.url+"/users"} component={Users} />
                     <Route exact path={match.url+"/storeService"} component={StoreService} />
+                    <Route exact path={match.url+"/pay"} component={Pay} />
                 </Switch>
                 </Content>
             </Layout>
@@ -49,7 +50,4 @@ const Cashier = ({
     )
 }
 
-export default connect(({cashier})=>{
-    console.log(cashier);
-    return cashier;
-})(Cashier);
+export default connect(({cashier,app})=>({cashier,app}))(Cashier);
