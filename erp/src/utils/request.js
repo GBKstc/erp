@@ -15,7 +15,8 @@ const checkStatus=(response)=>{
 export default async function request({url,...options}) {
     console.log(url);
     options.headers={
-        'Content-Type':'application/json'
+        Accept: 'application/json',
+        'Content-Type': 'application/x-www-form-urlencoded'
     }
     const response=await fetch(url,options);
     checkStatus(response);

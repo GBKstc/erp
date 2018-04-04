@@ -1,4 +1,5 @@
-const APIV1 = 'cashier';
+const APIV1 = '/cashier';
+//const APIV1 = 'http://192.168.18.17/cashier';
 
 module.exports = {
   

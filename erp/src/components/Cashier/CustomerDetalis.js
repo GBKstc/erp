@@ -67,10 +67,10 @@ const CustomerDetalis = ({customerDetalis,dispatch}) => {
                             <Col span={2}></Col>
                             <Col span={2}>开始服务</Col>
                             <Col span={2}><Link to= '/cashier/pay'>充值</Link></Col>
-                            <Col span={2}>补充值</Col>
+                            <Col span={2}><Link to='/cashier/repairPay'>补充值</Link></Col>
                             <Col span={2}>取货</Col>
                             <Col span={2}>退货</Col>
-                            <Col span={2}>购买</Col>
+                            <Col span={2}><Link to='/cashier/buy'>购买</Link></Col>
                             <Col span={2}>消费</Col>
                             <Col span={2}>转账</Col>
                             <Col span={2}>优惠码</Col>

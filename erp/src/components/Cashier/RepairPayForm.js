@@ -9,7 +9,7 @@ const {isEmpty} = variable;
 
 const FormItem = Form.Item;
 
-const PayForm = ({customerDetalis}) => {
+const RepairPayForm = ({customerDetalis}) => {
    const isShow = isEmpty(customerDetalis);
     return (
         <BaseBox >
@@ -31,7 +31,7 @@ const PayForm = ({customerDetalis}) => {
                     </Col>
                     <Col span={6}>
                         <FormItem
-                            label="最低充值金额/元:"
+                            label="支付方式:"
                         >
                             <Input disabled={true} placeholder="input placeholder" value={customerDetalis.cardno}/>
                         </FormItem>
@@ -42,20 +42,39 @@ const PayForm = ({customerDetalis}) => {
                 <Form layout='vertical' style={{width:'100%'}}>
                     <Col span={6}>
                         <FormItem
-                            label="支付方式:"
+                            label="商户号:"
+                        >
+                            <Input style={{ color: 'rgb(128,128,128)' }} disabled={true} placeholder="input placeholder" value={customerDetalis.customername} />
+                        </FormItem>
+                    </Col>
+                    <Col span={6}>
+                        <FormItem
+                            label="POS机终端号:"
                         >
                             <Input style={{color:'rgb(128,128,128)'}} disabled={true} placeholder="input placeholder" value={customerDetalis.customername}/>
                         </FormItem>
                     </Col>
                     <Col span={6}>
                         <FormItem
-                            label="支付方式:"
+                            label="支付订单号:"
                         >
                             <Input disabled={true} placeholder="input placeholder" value={customerDetalis.cardrankname}/>
                         </FormItem>
                     </Col>
-
                  </Form>
+            </Row>
+            <Row>
+                <Form layout='vertical' style={{ width: '100%' }}>
+                    <Col span={18}>
+                        <FormItem
+                            label="商户号:"
+                        >
+                            <Input style={{ color: 'rgb(128,128,128)' }} disabled={true} placeholder="input placeholder" value={customerDetalis.customername} />
+                            <Button type="primary">重新扫描</Button>
+                        </FormItem>
+                    </Col>
+                    
+                </Form>
             </Row>
             
         </BaseBox>
@@ -63,4 +82,4 @@ const PayForm = ({customerDetalis}) => {
     );
 };
 
-export default connect(({cashier}) => (cashier))(PayForm);
+export default connect(({ cashier }) => (cashier))(RepairPayForm);

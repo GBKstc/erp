@@ -12,6 +12,7 @@ const {
 class CustomerList extends React.Component{
     constructor (props) {
         super(props)
+        console.log(props);
         const {
             customerList,
             isSelect,
@@ -62,4 +63,4 @@ class CustomerList extends React.Component{
 }
 
 
-export default connect(({cashier}) => (cashier))(CustomerList);
+export default connect(({ cashier }) => (cashier))(CustomerList);

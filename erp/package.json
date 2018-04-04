@@ -15,6 +15,7 @@
     "dva": "^2.1.0",
     "less-vars-to-js": "^1.2.1",
     "mockjs": "^1.0.1-beta3",
+    "qrcode.react": "^0.8.0",
     "react": "^15.4.0",
     "react-dom": "^15.4.0"
   },

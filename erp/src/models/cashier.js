@@ -9,12 +9,46 @@ const Cashier = {
 
   state: {
     list: [],
-    visibleModal: false,
+    visibleModal: {
+      PayModal:false,
+      BuySelectModal:false,
+    },
+    modalTitle:"",
     customerList: [],
     customerDetalis: {},
     isSelect:[],
   },
   reducers: {
+    //关闭模态框
+    closeModal(state,{
+      payload: {
+        key
+      }
+    }){
+      const { visibleModal} = state;
+      visibleModal[key] = false;
+      return {
+        ...state,
+        visibleModal
+      };
+    },
+    //打开模态框
+    openModal(state, {
+      payload: {
+        key,
+        ModalTitle
+      }
+    }) {
+      let { visibleModal, modalTitle } = state;
+      console.log(key, ModalTitle);
+      visibleModal[key] = true;
+      modalTitle = ModalTitle;
+      return {
+        ...state,
+        visibleModal,
+        modalTitle
+      };
+    },
     saveUser(state, {
       payload: {
         data: list

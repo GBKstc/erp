@@ -1,7 +1,7 @@
 import { connect } from 'dva';
 import {Cashier} from '../../components';
 
-const { PayCustomerDetalis, PayTable, PayForm, PayMarket, PayButton, PayModal} = Cashier;
+const { PayCustomerDetalis, PayTable, RepairPayForm, PayMarket, PayButton, PayModal} = Cashier;
 
 const Pay = (aaaa) => {
     console.log(aaaa);
@@ -9,7 +9,7 @@ const Pay = (aaaa) => {
         <div>
             <PayCustomerDetalis/>
             <PayTable/>
-            <PayForm/>
+            <RepairPayForm/>
             <PayMarket />
             <PayButton />
             <PayModal />
@@ -17,4 +17,4 @@ const Pay = (aaaa) => {
     );
 };
 
-export default connect(({cashier})=>({cashier}))(Pay);
+export default connect(({cashier,app,pay})=>({cashier,app,pay}))(Pay);

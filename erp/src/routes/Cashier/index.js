@@ -19,6 +19,16 @@ const Cashier = ({
         app,
         component: () => import('./Pay'),
     });
+    //补充值
+    const RepairPay = dynamic({
+        app,
+        component: () => import('./RepairPay'),
+    });
+    //购买
+    const Buy = dynamic({
+        app,
+        component: () => import('./Buy'),
+    })
     return (
         <Layout>
             <Sider width={200} style={{ background: '#fff' }}>
@@ -40,8 +50,10 @@ const Cashier = ({
                 </Breadcrumb>
                 <Content style={{ background: 'rgb(245,245,245)', margin: 0, minHeight: 560 }}>
                 <Switch>
-                    <Route exact path={match.url+"/storeService"} component={StoreService} />
-                    <Route exact path={match.url+"/pay"} component={Pay} />
+                    <Route exact path={match.url + "/storeService"} component={StoreService} />
+                    <Route exact path={match.url + "/pay"} component={Pay} />
+                    <Route exact path={match.url + "/repairPay"} component={RepairPay} />
+                        <Route exact path={match.url + "/buy"} component={Buy} />
                 </Switch>
                 </Content>
             </Layout>
