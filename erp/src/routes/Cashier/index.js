@@ -4,10 +4,11 @@ const { Header, Content, Sider } = Layout;
 import { Link, Route, Switch } from 'dva/router';
 import dynamic from 'dva/dynamic';
 import { connect } from 'dva';
-const basePath = "../../"
+
+import Bread from '../../components/layout/Bread';
 
 const Cashier = ({
-    app,children,match,dispatch
+    app,children,match,dispatch,location
 })=>{
     //到店服务
     const StoreService = dynamic({
@@ -45,15 +46,15 @@ const Cashier = ({
                 </Menu>
             </Sider>
             <Layout style={{ padding: '0 24px 24px' }}>
-                <Breadcrumb style={{ margin: '8px 0' }}>
-                    <Breadcrumb.Item>{match.url}</Breadcrumb.Item>
-                </Breadcrumb>
+                <Bread location={location}>
+                   
+                </Bread>
                 <Content style={{ background: 'rgb(245,245,245)', margin: 0, minHeight: 560 }}>
                 <Switch>
                     <Route exact path={match.url + "/storeService"} component={StoreService} />
                     <Route exact path={match.url + "/pay"} component={Pay} />
                     <Route exact path={match.url + "/repairPay"} component={RepairPay} />
-                        <Route exact path={match.url + "/buy"} component={Buy} />
+                    <Route exact path={match.url + "/buy"} component={Buy} />
                 </Switch>
                 </Content>
             </Layout>

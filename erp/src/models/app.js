@@ -8,7 +8,23 @@ const App = {
   namespace: "app",
 
   state: {
-    app:"app"
+    menu: [
+      {
+        id: 1,
+        name: '收银',
+        router: '/cashier',
+        grade:1
+      },
+      {
+        id: 2,
+        name: '到店服务',
+        router: '/storeService',
+        grade:2
+      },
+      {
+        
+      }
+    ],
   },
   reducers: {
     
