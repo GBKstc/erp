@@ -55,7 +55,7 @@ const Bread = ({location}) => {
   
   const createBread = function (pathName,pathList = []){
     let path = Path.find((item)=>item.router===pathName);
-    pathList.unshift(<Breadcrumb.Item ><Link to={path.router}>{path.name}</Link></Breadcrumb.Item>)
+    pathList.unshift(<Breadcrumb.Item key={path.id}><Link to={path.router}>{path.name}</Link></Breadcrumb.Item>)
     if(!path){
       return null;
     }else if(!path.parentId){
@@ -64,18 +64,7 @@ const Bread = ({location}) => {
       return createBread(Path.find((item)=>item.id===path.parentId).router,pathList)
     };
   }
-
   const breads = createBread(pathname);
-
-  // const breads = () => {
-    
-  //   return (
-  //     <Breadcrumb.Item >
-  //       aaa
-  //     </Breadcrumb.Item>
-  //   )
-  // };
-
   return (
     <div className={styles.bread}>
       <Breadcrumb>
