@@ -3,7 +3,9 @@ import { Row, Col, Form, Input, Button, Select } from 'antd';
 import { variable } from '../../utils';
 import { Link } from 'dva/router';
 import BaseBox from '../BaseBox';
+import BaseUI from '../BaseUI';
 
+const {DynamicFieldSet} = BaseUI;
 
 const { isEmpty } = variable;
 
@@ -11,6 +13,9 @@ const FormItem = Form.Item;
 
 const PayMarket = ({ customerDetalis }) => {
     const isShow = isEmpty(customerDetalis);
+    const onChange = function(value){
+      console.log(value);
+    }
     return (
         <BaseBox >
             <Row>
@@ -36,24 +41,7 @@ const PayMarket = ({ customerDetalis }) => {
                         </FormItem>
                     </Col>
                     <Col span={6}>
-                        <FormItem
-                            label="销售部门:"
-                        >
-                            <Input
-                                type="text"
-
-                                value={"aaa"}
-                                style={{ width: '65%', marginRight: '3%' }}
-                            />
-                            <Select
-                                value={"1%"}
-                                style={{ width: '32%' }}
-
-                            >
-                                <Option value="1%">1%</Option>
-                                <Option value="2%">2%</Option>
-                            </Select>
-                        </FormItem>
+                      <DynamicFieldSet onChange={onChange} title="销售部门"/>
                     </Col>
                     <Col span={6}>
                         <FormItem
@@ -61,14 +49,14 @@ const PayMarket = ({ customerDetalis }) => {
                         >
                             <Input
                                 type="text"
-                                
+
                                 value={"aaa"}
                                 style={{ width: '65%', marginRight: '3%' }}
                             />
                             <Select
                                 value={"1%"}
                                 style={{ width: '32%' }}
-                                
+
                             >
                                 <Option value="1%">1%</Option>
                                 <Option value="2%">2%</Option>
