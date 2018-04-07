@@ -5,7 +5,9 @@ import { Link } from 'dva/router';
 import BaseBox from '../BaseBox';
 import QRCode from 'qrcode.react';
 
-const {isEmpty} = variable;
+const {
+  isEmpty,
+  } = variable;
 
 
 
@@ -21,7 +23,7 @@ const PayModal = ({ visibleModal, dispatch}) => {
         key
       }
     })
-    
+
   }
   const handleCancel = (key) => {
     dispatch({
@@ -31,24 +33,24 @@ const PayModal = ({ visibleModal, dispatch}) => {
       }
     })
   }
-   
+
     return (
       <Modal
         title="Basic Modal"
         visible={visibleModal.PayModal}
         onOk={handleOk.bind(this, key)}
-        okText="支付成功"   
+        okText="支付成功"
         onCancel={handleCancel.bind(this, key)}
         cancelText="支付失败"
       >
         <Row type="flex" justify="center">
-          
+
           <QRCode value="http://baidu.com" />
-          
+
         </Row>
-        
+
       </Modal>
-               
+
     );
 };
 

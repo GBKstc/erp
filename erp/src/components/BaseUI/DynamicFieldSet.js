@@ -1,8 +1,10 @@
-import { Form, Input, Icon, Button, InputNumber,Row  } from 'antd';
+import { Form, Input, Icon, Button, InputNumber, Row, Select  } from 'antd';
 import { connect } from 'dva';
 import React from 'react'
+import {variable} from "../../utils"
 const FormItem = Form.Item;
-
+const Option = Select.Option;
+const { isEmpty } = variable;
 class DynamicFieldSet extends React.Component{
 
   constructor(props) {
@@ -13,12 +15,11 @@ class DynamicFieldSet extends React.Component{
     this.state = {
       formValue:[
         {
-          name:"aa",
-          value:50,
+          name:null,
+          value:0,
         }
       ],
     };
-
   }
 
   componentWillMount(){
@@ -29,8 +30,8 @@ class DynamicFieldSet extends React.Component{
     let {formValue} = this.state;
     if(Object.prototype.toString.call(e)==="[object Number]"){
       formValue[index].value = e;
-    }else if(Object.prototype.toString.call(e)==="[object Object]"){
-      formValue[index].name = e.target.value;
+    }else if(Object.prototype.toString.call(e)==="[object String]"){
+      formValue[index].name = e;
     }else{
       return ;
     }
@@ -71,7 +72,7 @@ class DynamicFieldSet extends React.Component{
     for(let i=0;i<formValue.length;i++){
       if(!formValue[i].name){
         this.setState({
-          help:"请输入名称",
+          help:"请选择名称",
           validateStatus:"error"
         });
         return ;
@@ -94,18 +95,29 @@ class DynamicFieldSet extends React.Component{
   }
 
   render() {
+    const {options} = this.props
+    const children = isEmpty(options)?null:
+      options.map((item,index)=>(
+        <Option key={item.key}>{item.value}</Option>
+      ));
 
     const formItems = this.state.formValue.map((k, index) => {
       let {value,name} = k;
       return (
           <Row key={index}>
-            <Input
-              type="text"
-              value={name}
+            <Select
+              showSearch
+              style={{ width: 200 }}
+              placeholder="请选择"
+              optionFilterProp="children"
               style={{ width: '65%', marginRight: '3%' }}
+              value={name}
               onChange={this.onChange.bind(this,index)}
               onBlur={this.onBlur}
-            />
+              filterOption={(input, option) => option.props.children.toLowerCase().indexOf(input.toLowerCase()) >= 0}
+            >
+              {children}
+            </Select>
             <InputNumber
               value={value}
               min={0}

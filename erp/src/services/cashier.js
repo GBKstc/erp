@@ -13,7 +13,6 @@ const {
 } = api
 
 export function getCustomerList() {
-  console.log(get_customer_list);
   let param = {
     departmentid:15,
     type:0
@@ -21,6 +20,7 @@ export function getCustomerList() {
   return request({
     url: get_customer_list,
     method: 'post',
+    data:param
   })
 }
 

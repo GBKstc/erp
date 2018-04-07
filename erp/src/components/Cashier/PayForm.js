@@ -1,9 +1,9 @@
 import { connect } from 'dva';
-import { Row, Col, Form, Input, Button  } from 'antd';
+import { Row, Col, Form, Input, Button, Select  } from 'antd';
 import {variable} from '../../utils';
 import { Link } from 'dva/router';
 import BaseBox from '../BaseBox';
-
+const Option = Select.Option;
 
 const {isEmpty} = variable;
 
@@ -19,14 +19,18 @@ const PayForm = ({customerDetalis}) => {
                         <FormItem
                             label="充值账户:"
                         >
-                            <Input style={{color:'rgb(128,128,128)'}} disabled={true} placeholder="input placeholder" value={customerDetalis.customername}/>
+                          <Select placeholder="请选择">
+                            <Option key="1">生美充值金额</Option>
+                            <Option key="2">医美充值金额</Option>
+                          </Select>
                         </FormItem>
                     </Col>
                     <Col span={6}>
                         <FormItem
                             label="充值金额:"
+                            help="一百元"
                         >
-                            <Input disabled={true} placeholder="input placeholder" value={customerDetalis.cardrankname}/>
+                            <Input disabled={false} placeholder="请输入" value={customerDetalis.cardrankname}/>
                         </FormItem>
                     </Col>
                     <Col span={6}>
@@ -44,22 +48,30 @@ const PayForm = ({customerDetalis}) => {
                         <FormItem
                             label="支付方式:"
                         >
-                            <Input style={{color:'rgb(128,128,128)'}} disabled={true} placeholder="input placeholder" value={customerDetalis.customername}/>
+                            <Select>
+                              <Option key="1">银联/支付宝/微信</Option>
+                              <Option key="2">团购</Option>
+                              <Option key="3">银行转账</Option>
+                              <Option key="4">微信转账</Option>
+                              <Option key="5">支付宝转账</Option>
+                              <Option key="6">现金</Option>
+                              <Option key="7">市民卡</Option>
+                            </Select>
                         </FormItem>
                     </Col>
                     <Col span={6}>
                         <FormItem
-                            label="支付方式:"
+                            label="支付凭证:"
                         >
-                            <Input disabled={true} placeholder="input placeholder" value={customerDetalis.cardrankname}/>
+                            <Input disabled={false} placeholder="input placeholder" value={customerDetalis.cardrankname}/>
                         </FormItem>
                     </Col>
 
                  </Form>
             </Row>
-            
+
         </BaseBox>
-               
+
     );
 };
 
