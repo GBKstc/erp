@@ -21,7 +21,7 @@ class DynamicFieldSet extends React.Component{
       ],
       help:null,
     };
-    this.formData={};
+    this.formData=[];
   }
 
   componentWillReceiveProps (newProps){
@@ -32,20 +32,31 @@ class DynamicFieldSet extends React.Component{
       }];
   }
 
+
+
   onChange(index,e){
-    let {formValue,...oldState} = this.state;
+    let {formValue,help} = this.state;
     if(Object.prototype.toString.call(e)==="[object Number]"){
       formValue[index].value = e;
     }else if(Object.prototype.toString.call(e)==="[object String]"){
+      help = "";
+      for(let i=0;i<formValue.length;i++){
+        if(formValue[i].name == e){
+          help = "不能选同一个人";
+          break;
+        }
+      }
       formValue[index].name = e;
+
     }else{
       return ;
     }
     this.formData = formValue;
-    let newState = Object.assign({},formValue,oldState);
-
+    let newState = Object.assign({},{formValue},{help});
+    console.log(newState);
     this.setState({
-      formValue
+      formValue,
+      help
     });
     if(this.props.onChange){
       this.props.onChange(newState);
@@ -78,7 +89,7 @@ class DynamicFieldSet extends React.Component{
   }
 
   onBlur(){
-    let formValue = this.formValue;
+    let formValue = this.formData;
     let num = 0;
     for(let i=0;i<formValue.length;i++){
       if(!formValue[i].name){
@@ -97,7 +108,7 @@ class DynamicFieldSet extends React.Component{
       this.setState({
         help:"比例总和不为100%,请修改",
       });
-      let newState = Object.assign({},formValue,{help:"比例总和不为100%,请修改"});
+      let newState = Object.assign({},{formValue},{help:"比例总和不为100%,请修改"});
       if(this.props.onChange){
         this.props.onChange(newState);
       }
@@ -116,6 +127,21 @@ class DynamicFieldSet extends React.Component{
 
   render() {
     const {options} = this.props;
+    //const options = [
+    //  {
+    //    key:'a',
+    //    value:'a',
+    //  },
+    //  {
+    //    key:'b',
+    //    value:'b',
+    //  },
+    //  {
+    //    key:'c',
+    //    value:'c',
+    //  }
+    //];
+
     const children = isEmpty(options)?null:
       options.map((item,index)=>(
         <Option key={item.key}>{item.value}</Option>

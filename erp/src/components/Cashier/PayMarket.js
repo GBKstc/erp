@@ -57,6 +57,8 @@ class PayMarket extends React.Component{
     this.findDepStroeStaff = this.findDepStroeStaff.bind(this);
     this.departInfoIntroduceChange = this.departInfoIntroduceChange.bind(this);
     this.departInfoIntroduceProportion = this.departInfoIntroduceProportion.bind(this);
+    this.introduceAdInfo = this.introduceAdInfo.bind(this);
+    this.introduceBeautyInfo = this.introduceBeautyInfo.bind(this);
     this.onBlur = this.onBlur.bind(this);
 
     this.state={
@@ -85,7 +87,7 @@ class PayMarket extends React.Component{
       introduce_beauty_info:introduce_beauty_info,
       departInfoHelp:null,
     };
-    
+
 
   }
 
@@ -100,7 +102,7 @@ class PayMarket extends React.Component{
 
     let { ...State } = this.state;
     let newData = {};
-    
+
     switch (key) {
       //更改销售部门占比
       case "departInfoSale":
@@ -121,6 +123,14 @@ class PayMarket extends React.Component{
       //更改介绍部门占比
       case "departInfoIntroduceProportion":
         newData = this.departInfoIntroduceProportion(value);
+        break;
+      //更改介绍顾问信息
+      case "introduce_ad_info":
+        newData = this.introduceAdInfo(value);
+        break;
+      //更改介绍美容师信息
+      case "introduce_beauty_info":
+        newData = this.introduceBeautyInfo(value);
         break;
     }
     this.setNewChange(newData);
@@ -203,7 +213,7 @@ class PayMarket extends React.Component{
 
   saleAdInfo(value){
     let sale_ad_info = [];
-
+    value = value.formValue;
     for(let i=0;i<value.length;i++){
       let newInfo = {};
       newInfo.sale = value[i].name;
@@ -214,14 +224,39 @@ class PayMarket extends React.Component{
   }
 
   saleBeautyInfo(value){
-    let {sale_beauty_info} = this.state;
+    let sale_beauty_info = [];
+    value = value.formValue;
     for(let i=0;i<value.length;i++){
       let newInfo = {};
       newInfo.sale = value[i].name;
       newInfo.sale_proportion = value[i].value;
-      sale_ad_info.push(newInfo);
+      sale_beauty_info.push(newInfo);
     }
     return {sale_beauty_info};
+  }
+
+  introduceAdInfo(value){
+    let introduce_beauty_info = [];
+    value = value.formValue;
+    for(let i=0;i<value.length;i++){
+      let newInfo = {};
+      newInfo.sale = value[i].name;
+      newInfo.sale_proportion = value[i].value;
+      introduce_beauty_info.push(newInfo);
+    }
+    return {introduce_beauty_info};
+  }
+
+  introduceBeautyInfo(value){
+    let introduce_beauty_info = [];
+    value = value.formValue;
+    for(let i=0;i<value.length;i++){
+      let newInfo = {};
+      newInfo.sale = value[i].name;
+      newInfo.sale_proportion = value[i].value;
+      introduce_beauty_info.push(newInfo);
+    }
+    return {introduce_beauty_info};
   }
 
   setNewChange(newData) {
@@ -366,10 +401,10 @@ class PayMarket extends React.Component{
                 </FormItem>
               </Col>
               <Col span={6}>
-                <DynamicFieldSet onChange={this.onChange} title="介绍顾问:" options={this.state.introduceStaffList}/>
+                <DynamicFieldSet onChange={this.onChange.bind(this,'introduce_ad_info')} title="介绍顾问:" options={this.state.introduceStaffList}/>
               </Col>
               <Col span={6}>
-                <DynamicFieldSet onChange={this.onChange} title="介绍美容师:" options={this.state.introduceStaffList}/>
+                <DynamicFieldSet onChange={this.onChange.bind(this,'introduce_beauty_info')} title="介绍美容师:" options={this.state.introduceStaffList}/>
               </Col>
             </Form>
           </Row>

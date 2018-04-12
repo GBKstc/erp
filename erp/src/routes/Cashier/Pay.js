@@ -36,7 +36,7 @@ class Pay extends React.Component{
 
         let data = Object.assign({},this.oldState,newState);
         this.oldState = data;
-        console.log(data);
+        //console.log(data);
 
 
     }
@@ -89,7 +89,7 @@ class Pay extends React.Component{
         }
         return false;
     }
-    
+
     render(){
         return (
             <div>
