@@ -12,7 +12,7 @@ const {
 class CustomerList extends React.Component{
     constructor (props) {
         super(props)
-        console.log(props);
+        // console.log(props);
         const {
             customerList,
             isSelect,

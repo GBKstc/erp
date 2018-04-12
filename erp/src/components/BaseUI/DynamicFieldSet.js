@@ -15,19 +15,25 @@ class DynamicFieldSet extends React.Component{
     this.state = {
       formValue:[
         {
-          name:null,
-          value:0,
+          name:undefined,
+          value:100,
         }
       ],
+      help:null,
     };
+    this.formData={};
   }
 
-  componentWillMount(){
-
+  componentWillReceiveProps (newProps){
+    let formValue = [
+      {
+        name:undefined,
+        value:100,
+      }];
   }
 
   onChange(index,e){
-    let {formValue} = this.state;
+    let {formValue,...oldState} = this.state;
     if(Object.prototype.toString.call(e)==="[object Number]"){
       formValue[index].value = e;
     }else if(Object.prototype.toString.call(e)==="[object String]"){
@@ -35,11 +41,14 @@ class DynamicFieldSet extends React.Component{
     }else{
       return ;
     }
+    this.formData = formValue;
+    let newState = Object.assign({},formValue,oldState);
+
     this.setState({
       formValue
     });
     if(this.props.onChange){
-      this.props.onChange(formValue);
+      this.props.onChange(newState);
     }
   }
 
@@ -47,13 +56,14 @@ class DynamicFieldSet extends React.Component{
     let {formValue} = this.state;
     formValue.push(
       {
-        name:null,
+        name:undefined,
         value:0
       }
-    )
+    );
     this.setState({
       formValue
-    })
+    });
+    this.formData = formValue;
     this.onBlur();
   }
 
@@ -62,19 +72,23 @@ class DynamicFieldSet extends React.Component{
     formValue.splice(index,1);
     this.setState({
       formValue
-    })
+    });
+    this.formData = formValue;
     this.onBlur();
   }
 
   onBlur(){
-    let {formValue} = this.state;
+    let formValue = this.formValue;
     let num = 0;
     for(let i=0;i<formValue.length;i++){
       if(!formValue[i].name){
         this.setState({
           help:"请选择名称",
-          validateStatus:"error"
         });
+        let newState = Object.assign({},formValue,{help:"请选择名称"});
+        if(this.props.onChange){
+          this.props.onChange(newState);
+        }
         return ;
       }
       num = num + formValue[i].value;
@@ -82,20 +96,26 @@ class DynamicFieldSet extends React.Component{
     if(num!==100){
       this.setState({
         help:"比例总和不为100%,请修改",
-        validateStatus:"error"
       });
+      let newState = Object.assign({},formValue,{help:"比例总和不为100%,请修改"});
+      if(this.props.onChange){
+        this.props.onChange(newState);
+      }
       return ;
     }
-    this.setState({
-      help:null,
-      validateStatus:"success",
 
-    })
+    this.setState({
+      help:"",
+    });
+    let newState = Object.assign({},formValue,{help:""});
+    if(this.props.onChange){
+      this.props.onChange(newState);
+    }
 
   }
 
   render() {
-    const {options} = this.props
+    const {options} = this.props;
     const children = isEmpty(options)?null:
       options.map((item,index)=>(
         <Option key={item.key}>{item.value}</Option>
@@ -106,11 +126,9 @@ class DynamicFieldSet extends React.Component{
       return (
           <Row key={index}>
             <Select
-              showSearch
-              style={{ width: 200 }}
               placeholder="请选择"
               optionFilterProp="children"
-              style={{ width: '65%', marginRight: '3%' }}
+              style={{ width: '65%', marginRight: '3%'}}
               value={name}
               onChange={this.onChange.bind(this,index)}
               onBlur={this.onBlur}
@@ -143,7 +161,6 @@ class DynamicFieldSet extends React.Component{
       <Form>
         <FormItem
           label={`${this.props.title}:`}
-          validateStatus={this.state.validateStatus}
           help={this.state.help}
         >
         {formItems}

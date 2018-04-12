@@ -7,7 +7,7 @@ import styles from './Layout.less'
 
 const Bread = ({location}) => {
   // 匹配当前路由
-  console.log(location);
+  //console.log(location);
   let pathname = location.pathname;
   let pathList = pathname.substr(0,1)=='/'?location.pathname.substr(1).split("/"):location.pathname.split("/");
   const Path = [

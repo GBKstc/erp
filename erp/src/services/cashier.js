@@ -9,8 +9,10 @@ const {
 } = config
 const {
   get_customer_list,
-  get_customerById
-} = api
+  get_customerById,
+  cardInfo,
+  logininfo,
+} = api;
 
 export function getCustomerList() {
   let param = {
@@ -25,11 +27,25 @@ export function getCustomerList() {
 }
 
 export function getCustomerById(params) {
-  console.log(params);
   return request({
     url: get_customerById,
     method: 'post',
     data: params,
+  })
+}
+
+export function getcardInfoById(params) {
+  return request({
+    url: cardInfo,
+    method: 'post',
+    data: params,
+  })
+}
+
+export function queryLoginInfo() {
+  return request({
+    url: logininfo,
+    method: 'post',
   })
 }
 

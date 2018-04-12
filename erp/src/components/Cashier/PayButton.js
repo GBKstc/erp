@@ -9,24 +9,21 @@ const { isEmpty } = variable;
 
 const FormItem = Form.Item;
 
-const PayButton = ({ customerDetalis,dispatch }) => {
+const PayButton = ({ customerDetalis,dispatch,onClick }) => {
     
     const handleOk = (key) => {
         console.log(key);
-        dispatch({
-            type: 'cashier/openModal',
-            payload: {
-                key
-            }
-        })
 
+        if(onClick){
+            onClick();
+        }
     }
 
     return (
         
         <Row style={{ marginTop: 30 }} justify="center" type="flex">
                 <Col>
-                <Button type="primary" onClick={handleOk.bind(this,"PayModal")}>确认充值</Button>
+                    <Button type="primary" onClick={handleOk.bind(this,"PayModal")}>确认充值</Button>
                 </Col> 
                 <Col span={6}>
                 </Col> 
