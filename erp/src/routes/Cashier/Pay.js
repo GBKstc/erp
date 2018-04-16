@@ -4,65 +4,75 @@ import {Cashier} from '../../components';
 import {message} from 'antd';
 
 import {config,request,variable} from '../../utils';
-const {isEmpty}  = variable;
+const {isEmpty,removeEmpty}  = variable;
 const { PayCustomerDetalis, PayTable, PayForm, PayMarket, PayButton, PayModal} = Cashier;
-
+const {api} = config;
 class Pay extends React.Component{
     constructor(props){
         super(props);
-        //console.log(props);
         // this.payFormChange = this.payFormChange.bind(this);
         // this.payMarketChange = this.payMarketChange.bind(this);
         this.onChange = this.onChange.bind(this);
         this.onClick = this.onClick.bind(this);
         this.formValidation = this.formValidation.bind(this);
-        this.state = {
-            // "payMethod": null,
-            // "remark": null,
-            // "cardid": null,
-            // "serviceid": null,
-            // "depart_info": null,
-            // "sale_beauty_info": null,
-            // "sale_ad_info": null,
-            // "introduce_beauty_info": null,
-            // "introduce_ad_info": null,
-            // "recharge_info": null,
-            // "pay": null
-        };
-        this.oldState = {};
+        this.payRequest = this.payRequest.bind(this);
+        this.state = {};
+        //pay页面别的模块数据
+        this.oldState = this.props.cashier.payState;
+        //payMarket模块数据
+        this.oldMarketState = this.props.cashier.marketInfo;
     }
 
-    onChange(newState){
-
-        let data = Object.assign({},this.oldState,newState);
-        this.oldState = data;
-        //console.log(data);
-
-
+    onChange(key,newState){
+        switch (key) {
+          case "payMarket":
+            this.oldMarketState = Object.assign({},this.oldState,newState);
+          case "payForm":
+            this.oldState = Object.assign({},this.oldState,newState);
+        }
     }
-
-
 
     onClick(){
-        const data = this.oldState;
-        const key = "PayModal";
+        const data = Object.assign({},this.oldState,this.oldMarketState);
         if(this.formValidation(data)){
-            this.props.dispatch({
+
+            if(this.oldState.isButton){
+              this.oldState.isButton = false;
+              this.props.dispatch({
                 type: 'cashier/saveData',
                 payload: {
-                    data,
-                    key:"payState"
+                  data:Object.assign({},{...this.oldState}),
+                  key:"payState"
                 }
-            });
-            this.props.dispatch({
-                type: 'cashier/openModal',
+              });
+              this.props.dispatch({
+                type: 'cashier/saveData',
                 payload: {
-                    key
+                  data:Object.assign({},{...this.oldMarketState}),
+                  key:"marketInfo"
                 }
-            })
+              });
+              this.payRequest();
+            }
+
+
         }else {
             message.info("请正确填写内容");
         }
+      this.props.dispatch({
+        type: 'cashier/saveData',
+        payload: {
+          data:Object.assign({},{...this.oldState}),
+          key:"payState"
+        }
+      });
+      this.props.dispatch({
+        type: 'cashier/saveData',
+        payload: {
+          data:Object.assign({},{...this.oldMarketState}),
+          key:"marketInfo"
+        }
+      });
 
     }
 
@@ -74,7 +84,7 @@ class Pay extends React.Component{
             return false;
         }
         //payForm没提醒
-        if(verifyInfo.money!==""||verifyInfo.voucher!==""){
+        if(isEmpty(verifyInfo)||verifyInfo.money!==""||verifyInfo.voucher!==""){
             return false;
         }
         //有推荐部门
@@ -87,16 +97,120 @@ class Pay extends React.Component{
                 return false;
             }
         }
-        return false;
+        return true;
     }
+
+    payRequest(){
+      let { cashier } = this.state;
+      let { customerDetalis } = this.props.cashier;
+      let {pay} = this.oldState;
+      let {depart_info} = this.oldMarketState;
+      if( isEmpty(depart_info.introduce) ){
+        delete depart_info.introduce;
+        delete depart_info.introduce_proportion;
+      }
+      for(let key in pay){
+        if(isEmpty(pay[key])){
+          delete pay[key];
+        }
+      }
+      let reqData = {
+        //卡ID
+        "cardid":customerDetalis.cardid,
+        "serviceid":customerDetalis.serviceid,
+        "depart_info":depart_info,
+        "sale_beauty_info":this.oldMarketState.sale_beauty_info,
+        // "introduce_beauty_info":[
+        //   {
+        //     "introduce":"介绍美容师ID",
+        //     "introduce_proportion":"介绍美容师提成比例"
+        //   }
+        // ],
+        "sale_ad_info":this.oldMarketState.sale_ad_info,
+        // "introduce_ad_info":[
+        //   {
+        //     "introduce":"介绍顾问ID",
+        //     "introduce_proportion":"介绍顾问提成比例"
+        //   }
+        // ],
+        "recharge_info":this.oldState.recharge_info,
+        "pay":this.oldState.pay,
+        //payMethod:'offline'
+      };
+      request({
+        url:api.recharge,
+        data:reqData
+      }).then(({data})=>{
+        if(isEmpty(data)){
+          message.info("网络错误,请重试");
+        }else if(this.oldState.pay.type=="00"){
+          //支付宝微信银联支付
+          const key = "PayModal";
+          this.oldState.ordernoId = data.orderno;
+          this.props.dispatch(
+            {
+              type:'cashier/saveData',
+              payload:{
+                payload: {
+                  data:Object.assign({},{...this.oldState}),
+                  key:"payState"
+                }
+              }
+            }
+          );
+          this.props.dispatch(
+            {
+              type:'cashier/saveData',
+              payload:{
+                payload: {
+                  data:Object.assign({},{...this.oldMarketState}),
+                  key:"marketInfo"
+                }
+              }
+            }
+          );
+          this.props.dispatch({
+            type: 'cashier/openModal',
+            payload: {
+              key
+            }
+          });
+
+        }else {
+          message.success("充值成功！");
+          this.oldState.isButton = true;
+          this.props.dispatch({
+            type: 'cashier/saveData',
+            payload: {
+              data:Object.assign({},{...this.oldState}),
+              key:"payState"
+            }
+          });
+          this.props.dispatch(
+            {
+              type:'cashier/saveData',
+              payload:{
+                payload: {
+                  data:Object.assign({},{...this.oldMarketState}),
+                  key:"marketInfo"
+                }
+              }
+            }
+          );
+        }
+        console.log(data);
+      })
+    }
+
+
 
     render(){
         return (
             <div>
                 <PayCustomerDetalis/>
                 <PayTable/>
-                <PayForm onChange={this.onChange}/>
-                <PayMarket onChange={this.onChange}/>
+                <PayForm onChange={this.onChange.bind(this,"payForm")}/>
+                <PayMarket onChange={this.onChange.bind(this,"payMarket")}/>
                 <PayButton onClick={this.onClick} />
                 <PayModal />
             </div>

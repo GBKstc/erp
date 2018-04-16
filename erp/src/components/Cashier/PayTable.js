@@ -1,18 +1,18 @@
 import { connect } from 'dva';
 import { Row, Col, Table  } from 'antd';
-import {variable} from '../../utils';
 import { Link } from 'dva/router';
 import BaseBox from '../BaseBox';
 import React from "react";
-import { config,request} from '../../utils'
+import { config,request,variable} from '../../utils'
 
+const { isEmpty} = variable;
 const {api} = config;
 const payStatus = {
   "02":"待支付",
   "03":"已支付",
   "04":"支付失败",
   "05":"退款"
-}
+};
 const payType = {
   "01":"现金",
   "00":"银联/微信/支付宝",
@@ -23,7 +23,7 @@ const payType = {
   "105":"庙街",
   "107":"新氧",
   "108":"H5核销",
-}
+};
 const columns = [{
     title: '充值单号',
     dataIndex: 'orderno',
@@ -61,25 +61,27 @@ const columns = [{
 class PayTable extends React.Component{
   constructor(props){
       super(props);
+      console.log(props);
       this.getRechargerecord = this.getRechargerecord.bind(this);
-      let {
-        dataSource
-      } = props;
       this.state = {
-        dataSource
+        dataSource:[]
       }
   }
   componentWillMount(){
     this.getRechargerecord();
-  } 
+  }
 
   //获取充值记录
   getRechargerecord(){
+    let { customerDetalis } = this.props;
+    if(isEmpty(customerDetalis)){
+      customerDetalis = JSON.parse(localStorage.getItem("customerDetalis"));
+    }
     const object = {
       url:api.getRechargerecord,
       method:'post',
       data:{
-        serviceid:"63324"
+        serviceid:customerDetalis.serviceid
       }
     }
     request(object)
@@ -91,8 +93,8 @@ class PayTable extends React.Component{
 
   }
 
-  
-  
+
+
 
 
 
@@ -104,14 +106,6 @@ class PayTable extends React.Component{
     )
   }
 }
-// const PayTable = ({}) => {
-   
-//     return (
-//         <BaseBox title="本次订单充值记录">
-//             <Table bordered dataSource={dataSource} size="small" columns={columns} pagination={false}/>
-//         </BaseBox>
-               
-//     );
-// };
 
-export default connect()(PayTable);
+
+export default connect(({cashier})=>(cashier))(PayTable);

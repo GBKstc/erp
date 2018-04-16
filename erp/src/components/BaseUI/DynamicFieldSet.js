@@ -9,10 +9,11 @@ class DynamicFieldSet extends React.Component{
 
   constructor(props) {
     super(props);
+    const {dynamicFieldSetState}  = this.props;
     this.onChange = this.onChange.bind(this);
     this.add = this.add.bind(this);
     this.onBlur = this.onBlur.bind(this);
-    this.state = {
+    this.state = isEmpty(dynamicFieldSetState)?{
       formValue:[
         {
           name:undefined,
@@ -20,6 +21,8 @@ class DynamicFieldSet extends React.Component{
         }
       ],
       help:null,
+    }:{
+      ...dynamicFieldSetState
     };
     this.formData=[];
   }
@@ -96,7 +99,7 @@ class DynamicFieldSet extends React.Component{
         this.setState({
           help:"请选择名称",
         });
-        let newState = Object.assign({},formValue,{help:"请选择名称"});
+        let newState = Object.assign({},{formValue},{help:"请选择名称"});
         if(this.props.onChange){
           this.props.onChange(newState);
         }
@@ -118,7 +121,7 @@ class DynamicFieldSet extends React.Component{
     this.setState({
       help:"",
     });
-    let newState = Object.assign({},formValue,{help:""});
+    let newState = Object.assign({},{formValue},{help:""});
     if(this.props.onChange){
       this.props.onChange(newState);
     }
@@ -127,20 +130,6 @@ class DynamicFieldSet extends React.Component{
 
   render() {
     const {options} = this.props;
-    //const options = [
-    //  {
-    //    key:'a',
-    //    value:'a',
-    //  },
-    //  {
-    //    key:'b',
-    //    value:'b',
-    //  },
-    //  {
-    //    key:'c',
-    //    value:'c',
-    //  }
-    //];
 
     const children = isEmpty(options)?null:
       options.map((item,index)=>(

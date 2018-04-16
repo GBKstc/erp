@@ -119,6 +119,18 @@ const Cashier = {
         payamount:null,  //支付金额
         type:undefined //支付方式
       },
+
+
+      /**
+       * Pay页面按键防抖动
+       */
+      isButton:true,
+      /**
+       * PayModel页面参数
+       */
+      ordernoId:"",
+    },
+    marketInfo:{
       /**
        * PayMarket页面参数
        */
@@ -126,6 +138,7 @@ const Cashier = {
 
       //销售部门美容师和顾问选项
       saleStaffList:[],
+
       //介绍部门选项
       introduceList:[],
       //介绍部门美容师和顾问选项
@@ -136,6 +149,19 @@ const Cashier = {
         introduce: null, //介绍部门ID
         introduce_proportion: null //介绍部门提成比例
       },
+
+      //销售顾问
+
+      saleAdInfo:null,
+      //销售美容师
+
+      saleBeautyInfo:null,
+      //介绍顾问
+
+      introduceAdInfo:null,
+      //介绍美容师
+
+      introduceBeautyInfo:null,
       //销售顾问
       sale_ad_info: [{
         "sale": undefined,
@@ -156,7 +182,7 @@ const Cashier = {
         "introduce": undefined,
         "introduce_proportion": null
       }],
-    },
+    }
   },
   reducers: {
     //关闭模态框
@@ -225,7 +251,6 @@ const Cashier = {
       payload:{key}
     }){
       let isSelect = [];
-      console.log(key);
       isSelect[key] = true;
       return {
         ...state,
@@ -270,6 +295,7 @@ const Cashier = {
       const { data:customerDetalis } = yield call(getCustomerById, payload);
       const { data:cardInfo } = yield call(getcardInfoById,{cardid:customerDetalis.cardid});
       const data = Object.assign({}, customerDetalis, cardInfo);
+      localStorage.setItem("customerDetalis",JSON.stringify(data));
       yield put({
         type: 'saveCustomer',
         payload: {
@@ -299,7 +325,8 @@ const Cashier = {
   subscriptions: {
     setup({
       dispatch,
-      history
+      history,
+    ...state
     }) {
 
       console.log('running subscriptions ...');
@@ -309,14 +336,22 @@ const Cashier = {
       }) => {
 
         console.log(`pathname: ${pathname}`);
-        if (pathname === "/cashier/storeService"){
+        if (pathname.indexOf("/cashier")>-1){
           dispatch({
             type: 'queryCustomer'
           });
           dispatch({
             type: 'queryLoginInfo'
           });
-        } 
+
+          dispatch({
+            type: 'saveData',
+            payload: {
+              data:JSON.parse(localStorage.getItem("customerDetalis")),
+              key:"customerDetalis"
+            }
+          });
+        }
       });
     }
   }

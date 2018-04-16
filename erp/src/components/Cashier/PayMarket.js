@@ -10,7 +10,7 @@ const Option = Select.Option;
 
 const {DynamicFieldSet} = BaseUI;
 
-const { isEmpty } = variable;
+const { isEmpty,cpy } = variable;
 const { api } = config;
 
 const FormItem = Form.Item;
@@ -20,7 +20,7 @@ class PayMarket extends React.Component{
     super(props)
     console.log(props);
     const {
-      logininfo, payState
+      logininfo, marketInfo
     } = props;
     const {
         showIntroduce,
@@ -30,35 +30,32 @@ class PayMarket extends React.Component{
         introduceList,
         //介绍部门美容师和顾问选项
         introduceStaffList,
-        depart_info={
-          sale:logininfo.departid,
-          sale_proportion:depart_info.sale_proportion,
-          introduce:depart_info.introduce,
-          introduce_proportion:depart_info.introduce_proportion,
-        },
+        depart_info,
         //销售顾问
         sale_ad_info,
+        saleAdInfo,
         //销售美容师
         sale_beauty_info,
-
+        saleBeautyInfo,
         //介绍顾问
         introduce_ad_info,
+        introduceAdInfo,
         //介绍美容师
         introduce_beauty_info,
-
-  } = payState;
+        introduceBeautyInfo,
+  } = marketInfo;
     this.onChange = this.onChange.bind(this);
     this.onClick = this.onClick.bind(this);
     this.setNewChange = this.setNewChange.bind(this);
     this.departInfoSaleChange = this.departInfoSaleChange.bind(this);
-    this.saleAdInfo = this.saleAdInfo.bind(this);
-    this.saleBeautyInfo = this.saleBeautyInfo.bind(this);
+    this.saleAdInfoChange = this.saleAdInfoChange.bind(this);
+    this.saleBeautyInfoChange = this.saleBeautyInfoChange.bind(this);
     this.findDepStroeList = this.findDepStroeList.bind(this);
     this.findDepStroeStaff = this.findDepStroeStaff.bind(this);
     this.departInfoIntroduceChange = this.departInfoIntroduceChange.bind(this);
     this.departInfoIntroduceProportion = this.departInfoIntroduceProportion.bind(this);
-    this.introduceAdInfo = this.introduceAdInfo.bind(this);
-    this.introduceBeautyInfo = this.introduceBeautyInfo.bind(this);
+    this.introduceAdInfoChange = this.introduceAdInfoChange.bind(this);
+    this.introduceBeautyInfoChange = this.introduceBeautyInfoChange.bind(this);
     this.onBlur = this.onBlur.bind(this);
 
     this.state={
@@ -70,7 +67,12 @@ class PayMarket extends React.Component{
       introduceList:introduceList,
       //介绍部门美容师和顾问选项
       introduceStaffList:introduceStaffList,
-      depart_info:depart_info,
+      depart_info:{
+        sale:logininfo.departid,
+        sale_proportion:depart_info.sale_proportion,
+        introduce:depart_info.introduce,
+        introduce_proportion:depart_info.introduce_proportion,
+      },
       // depart_info:{
       //   sale: logininfo.companyid, //销售部门ID
       //   sale_proportion: 100, //销售部门提成比例
@@ -79,12 +81,16 @@ class PayMarket extends React.Component{
       // },
       //销售顾问
       sale_ad_info: sale_ad_info,
+      saleAdInfo:saleAdInfo,
       //销售美容师
       sale_beauty_info:sale_beauty_info,
+      saleBeautyInfo:saleBeautyInfo,
       //介绍顾问
       introduce_ad_info:introduce_ad_info,
+      introduceAdInfo:introduceAdInfo,
       //介绍美容师
       introduce_beauty_info:introduce_beauty_info,
+      introduceBeautyInfo:introduceBeautyInfo,
       departInfoHelp:null,
     };
 
@@ -110,11 +116,11 @@ class PayMarket extends React.Component{
         break;
       //更改销售顾问信息
       case "sale_ad_info":
-        newData = this.saleAdInfo(value);
+        newData = this.saleAdInfoChange(value);
         break;
       //更改销售美容师信息
       case "sale_beauty_info":
-        newData = this.saleBeautyInfo(value);
+        newData = this.saleBeautyInfoChange(value);
         break;
       //更改介绍部门
       case "departInfoIntroduce":
@@ -126,11 +132,11 @@ class PayMarket extends React.Component{
         break;
       //更改介绍顾问信息
       case "introduce_ad_info":
-        newData = this.introduceAdInfo(value);
+        newData = this.introduceAdInfoChange(value);
         break;
       //更改介绍美容师信息
       case "introduce_beauty_info":
-        newData = this.introduceBeautyInfo(value);
+        newData = this.introduceBeautyInfoChange(value);
         break;
     }
     this.setNewChange(newData);
@@ -211,20 +217,25 @@ class PayMarket extends React.Component{
     return depart_info;
   }
 
-  saleAdInfo(value){
+  saleAdInfoChange(value){
+    let {saleAdInfo} = this.state;
     let sale_ad_info = [];
+    saleAdInfo = cpy(value);
     value = value.formValue;
+
     for(let i=0;i<value.length;i++){
       let newInfo = {};
       newInfo.sale = value[i].name;
       newInfo.sale_proportion = value[i].value;
       sale_ad_info.push(newInfo);
     }
-    return {sale_ad_info};
+    return {sale_ad_info,saleAdInfo};
   }
 
-  saleBeautyInfo(value){
+  saleBeautyInfoChange(value){
+    let {saleBeautyInfo} = this.state;
     let sale_beauty_info = [];
+    saleBeautyInfo = cpy(value);
     value = value.formValue;
     for(let i=0;i<value.length;i++){
       let newInfo = {};
@@ -232,11 +243,13 @@ class PayMarket extends React.Component{
       newInfo.sale_proportion = value[i].value;
       sale_beauty_info.push(newInfo);
     }
-    return {sale_beauty_info};
+    return {sale_beauty_info, saleBeautyInfo};
   }
 
-  introduceAdInfo(value){
+  introduceAdInfoChange(value){
+    let {introduceAdInfo} = this.state;
     let introduce_beauty_info = [];
+    introduceAdInfo = cpy(value);
     value = value.formValue;
     for(let i=0;i<value.length;i++){
       let newInfo = {};
@@ -244,11 +257,13 @@ class PayMarket extends React.Component{
       newInfo.sale_proportion = value[i].value;
       introduce_beauty_info.push(newInfo);
     }
-    return {introduce_beauty_info};
+    return {introduce_beauty_info,introduceAdInfo};
   }
 
-  introduceBeautyInfo(value){
+  introduceBeautyInfoChange(value){
+    let {introduceBeautyInfo} = this.state;
     let introduce_beauty_info = [];
+    introduceBeautyInfo = cpy(value);
     value = value.formValue;
     for(let i=0;i<value.length;i++){
       let newInfo = {};
@@ -256,7 +271,7 @@ class PayMarket extends React.Component{
       newInfo.sale_proportion = value[i].value;
       introduce_beauty_info.push(newInfo);
     }
-    return {introduce_beauty_info};
+    return {introduce_beauty_info,introduceBeautyInfo};
   }
 
   setNewChange(newData) {
@@ -264,7 +279,7 @@ class PayMarket extends React.Component{
     let newState = Object.assign({}, State, newData);
     this.setState({
       ...newState
-    })
+    });
     if (this.props.onChange) {
       this.props.onChange(newState);
     }
@@ -275,7 +290,7 @@ class PayMarket extends React.Component{
     let object = {
       url: api.findDepStroe,
       method: 'post',
-    }
+    };
     request(object)
         .then(({ data }) => {
           //let introduceList = [];
@@ -367,10 +382,10 @@ class PayMarket extends React.Component{
               </FormItem>
             </Col>
             <Col span={6}>
-              <DynamicFieldSet onChange={this.onChange.bind(this,"sale_ad_info")} title="销售顾问:" options={this.state.saleStaffList}/>
+              <DynamicFieldSet onChange={this.onChange.bind(this,"sale_ad_info")} title="销售顾问:" options={this.state.saleStaffList} dynamicFieldSetState={this.state.saleAdInfo}/>
             </Col>
             <Col span={6}>
-              <DynamicFieldSet onChange={this.onChange.bind(this, "sale_beauty_info")} title="销售美容师:" options={this.state.saleStaffList}/>
+              <DynamicFieldSet onChange={this.onChange.bind(this, "sale_beauty_info")} title="销售美容师:" options={this.state.saleStaffList} dynamicFieldSetState={this.state.saleBeautyInfo}/>
             </Col>
           </Form>
         </Row>
@@ -401,10 +416,10 @@ class PayMarket extends React.Component{
                 </FormItem>
               </Col>
               <Col span={6}>
-                <DynamicFieldSet onChange={this.onChange.bind(this,'introduce_ad_info')} title="介绍顾问:" options={this.state.introduceStaffList}/>
+                <DynamicFieldSet onChange={this.onChange.bind(this,'introduce_ad_info')} title="介绍顾问:" options={this.state.introduceStaffList} dynamicFieldSetState={this.state.introduceAdInfo}/>
               </Col>
               <Col span={6}>
-                <DynamicFieldSet onChange={this.onChange.bind(this,'introduce_beauty_info')} title="介绍美容师:" options={this.state.introduceStaffList}/>
+                <DynamicFieldSet onChange={this.onChange.bind(this,'introduce_beauty_info')} title="介绍美容师:" options={this.state.introduceStaffList} dynamicFieldSetState={this.state.introduceBeautyInfo}/>
               </Col>
             </Form>
           </Row>
@@ -415,9 +430,6 @@ class PayMarket extends React.Component{
             </Col>
           </Row>
         )}
-
-
-
       </BaseBox>
     )
   }

@@ -134,10 +134,20 @@ function cpy(o){
     return res;
 }
 
+/**
+ * 删除对象内空属性
+ * @returns {*}
+ */
+const removeEmpty = (obj) =>
+  Object.entries(obj).forEach(([key, val]) => {
+    if (val && typeof val === 'object') removeEmpty(val)
+    else if (val == null) delete obj[key]
+  });
+
 /**cookic**/
 /**
  * 设置cookic
- * 
+ *
  */
 function SetCookie(name, value)//两个参数，一个是cookie的名子，一个是值
 {
@@ -148,9 +158,9 @@ function SetCookie(name, value)//两个参数，一个是cookie的名子，一�
 }
 /**
  * 获取cookic
- * 
+ *
  */
-function getCookie(name)//取cookies函数       
+function getCookie(name)//取cookies函数
 {
     let arr = document.cookie.match(new RegExp("(^| )" + name + "=([^;]*)(;|$)"));
     if (arr != null) return (arr[2]); return null;
@@ -246,7 +256,7 @@ module.exports = {
     format_str,
     unformat_str,
     cpy,
-
+    removeEmpty,
     money2Big,
 
     SetCookie,

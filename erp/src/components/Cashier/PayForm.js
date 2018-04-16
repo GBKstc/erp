@@ -10,10 +10,27 @@ const Option = Select.Option;
 const {isEmpty,money2Big} = variable;
 const FormItem = Form.Item;
 
+//是否支持手动输入
+const invertCharge = {
+  "00":false,
+  "01":false,
+  //大众点评
+  "100":true,
+  //美团
+  "101":true,
+  //大众点评霸王餐
+  "102":true,
+  //口碑
+  "103":true,
+  "105":false,
+  "107":false,
+  "108":false,
+};
 
 class PayForm extends React.Component{
     constructor(props){
         super(props);
+      console.log(this);
         const {} = this.props;
         this.getPayTypeList = this.getPayTypeList.bind(this);
         this.onChange = this.onChange.bind(this);
@@ -74,18 +91,18 @@ class PayForm extends React.Component{
             newData = this.changeVoucher(value);
             break;
         }
-        
+
         this.setNewChange(newData);
         // let newState = Object.assign({},State,newData);
         // this.setState({
         //     ...newState
         // })
-        
+
         // if(this.props.onChange){
         //     this.props.onChange(newState);
         // }
-        
-        
+
+
     }
 
     setNewChange(newData){
@@ -103,7 +120,7 @@ class PayForm extends React.Component{
     selectRechargeRccount(value){
 
         return {rechargeRccount:value};
-        
+
 
     }
 
@@ -120,7 +137,7 @@ class PayForm extends React.Component{
         }
         pay.payamount = value;
         recharge_info[rechargeRccount] = value;
-        
+
         return {
             pay:pay,
             recharge_info,
@@ -158,7 +175,14 @@ class PayForm extends React.Component{
 
 
         pay.type = value;
+
         for(let i=0;i<payTypeList.length;i++){
+            if(payTypeList[i].maxlength){
+              verifyInfo.voucher = "";
+            }
+            if(invertCharge[value]){
+              verifyInfo.money = "";
+            }
             if(payTypeList[i].code == value){
                 return {
                     selectPayType:payTypeList[i],
@@ -169,11 +193,11 @@ class PayForm extends React.Component{
             }
         }
         return null;
-        
+
     }
 
     changeVoucher(e){
-       
+
         let { selectPayType, pay, verifyInfo} = this.state;
         let {customerDetalis} = this.props;
         let content = e.target.value;
@@ -194,7 +218,7 @@ class PayForm extends React.Component{
             //     .then(({ data }) => {
             //         console.log(data);
             //     })
-            
+
         }
         pay.cer = content;
 
@@ -202,11 +226,11 @@ class PayForm extends React.Component{
             pay,
             verifyInfo
         }
-        
+
     }
 
     getPayTypeList(){
-        
+
         const object = {
             url:api.payTypeList,
             method:'post',
@@ -225,78 +249,64 @@ class PayForm extends React.Component{
         let content = e.target.value;
         if(content.length>selectPayType.maxlength||content.length<selectPayType.minlength){
             verifyInfo.voucher=`凭证长度在`+selectPayType.minlength+"和"+selectPayType.maxlength+"之间";
+        }else if(invertCharge[pay.type]){
+          verifyInfo.voucher="";
+          const object = {
+            url: api.ticketCodeQuery,
+            method: 'post',
+            data:{
+              payType: pay.type,
+              serviceId: customerDetalis.serviceid,
+              ticketCode: content
+            }
+          };
+          request(object)
+            .then(({ data,msg }) => {
+              // data = { price:"100" }
+              if(data){
+                let value = data.price-0;
+                verifyInfo.money = "";
+                bigNum = money2Big(value);
+                pay.payamount = value;
+                recharge_info[rechargeRccount] = value;
+                let newData = {
+                  pay: pay,
+                  recharge_info,
+                  bigNum,
+                  verifyInfo
+                };
+                this.setNewChange(newData);
+                // pay.payamount = data.price;
+                // this.setState({
+                //     pay
+                // })
+              }else{
+                message.info("优惠码已经过期");
+                verifyInfo.voucher = "优惠码已经过期";
+                let newData = {
+                  verifyInfo
+                };
+                this.setNewChange(newData);
+              }
+
+              console.log(data);
+
+            })
         }else{
-            verifyInfo.voucher="";
-            const object = {
-                url: api.ticketCodeQuery,
-                method: 'post',
-                data:{
-                    payType: pay.type,
-                    serviceId: customerDetalis.serviceid,
-                    ticketCode: content
-                }
-            };
-            request(object)
-                .then(({ data,msg }) => {
-                    // data = { price:"100" }
-                    if(data){  
-                        let value = data.price-0;  
-                        verifyInfo.money = "";
-                        bigNum = money2Big(value);
-                        pay.payamount = value;
-                        recharge_info[rechargeRccount] = value;
-                        let newData = {
-                            pay: pay,
-                            recharge_info,
-                            bigNum,
-                            verifyInfo
-                        };
-                        this.setNewChange(newData);
-                        // pay.payamount = data.price;
-                        // this.setState({
-                        //     pay
-                        // })
-                    }else{
-                        message.info("优惠码已经过期");
-                        verifyInfo.voucher = "优惠码已经过期";
-                        let newData = {
-                            verifyInfo
-                        };
-                        this.setNewChange(newData);
-                    }
-                    
-                    console.log(data);
-                    
-                })
-            
+          return ;
         }
     }
 
     render(){
-        //是否支持手动输入
-        const invertCharge = {
-            "00":false,
-            "01":false,
-            //大众点评
-            "100":true,
-            //美团
-            "101":true,
-            //大众点评霸王餐
-            "102":true,
-            //口碑
-            "103":true,
-            "105":false,
-            "107":false,
-            "108":false,
-        };
+
         let {payTypeList} = this.state;
         let payTypeListOption = null;
         if(!isEmpty(payTypeList)){
             payTypeListOption = payTypeList.map((item,index)=>(
-                <Option key={item.code}>{item.name}</Option>
+                <Option key={item.code} value={item.code}>{item.name}</Option>
             ));
         }
-        
+
         return (
             <BaseBox >
                 <Row>
@@ -316,7 +326,7 @@ class PayForm extends React.Component{
                                 label="充值金额:"
                                 help={this.state.bigNum}
                             >
-                                <InputNumber disabled={invertCharge[this.state.pay.type]} min={0} step={0.01} placeholder="请输入" value={this.state.pay.payamount?this.state.pay.payamount:0}  onChange={this.onChange.bind(this,'payamount')} on/>
+                                <InputNumber disabled={invertCharge[this.state.pay.type]} min={0} step={0.01} placeholder="请输入" value={this.state.pay.payamount?this.state.pay.payamount:0}  onChange={this.onChange.bind(this,'payamount')} />
                             </FormItem>
                         </Col>
                         <Col span={6}>

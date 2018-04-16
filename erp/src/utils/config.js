@@ -5,7 +5,7 @@ module.exports = {
     login: '/customer/service/unfinish',//登录
 
     logininfo:'/cashier/user/logininfo', //获取登录者信息
-    
+
     get_customer_list: '/cashier/customer/service/unfinish', //获取客户列表
     get_customerById: '/cashier/customer/service/get',  //获取客户详细信息 通过serviceid
     getRechargerecord: '/cashier/service/card/rechargerecord',//获取客户本次充值记录 通过serviceid
@@ -14,5 +14,10 @@ module.exports = {
     ticketCodeQuery: '/cashier/ticketCode/query',//获取支付码金额
     findDepStroe:'/erp-set/user/findDepStroe',//获取门店列表
     findDepStroeStaff:'/erp-set/user/findUser',//获取门店店员
+    recharge:'/cashier/service/card/recharge',//支付接口
+    paystatusCheck:'/cashier/service/recharge/paystatus/check',//支付接口
+
+
+    chargemoneyBycer:'/cashier/service/supplement/chargemoney/bycer',//补充值验证接口
   },
 }
