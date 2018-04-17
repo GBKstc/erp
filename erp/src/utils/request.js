@@ -1,6 +1,6 @@
 
 import fetch from 'dva/fetch';
-import { cpy } from "./variable";
+import { cpy, isEmpty } from "./variable";
 import {message} from "antd";
 import qs from 'qs';
 
@@ -55,7 +55,7 @@ export default function request({ url, data, method="post"}) {
       mode:'cors',
       credentials:'include',
       withCredentials:true,
-      body:JSON.stringify(data)
+      body:isEmpty(data)?"{}":JSON.stringify(data)
     };
   }
   // url = APIV1+String(url);

@@ -14,24 +14,44 @@ class RepairPayForm extends React.Component{
   constructor(props){
     super(props);
     console.log(props);
+    const {
+      repairPayState
+    } = this.props;
+
+    const {
+      QCcode,
+      posmerchantno,
+      posorderno,
+      postermno,
+      amount,
+      paystatus,
+      rechargeRccount,
+    } = repairPayState;
+
     this.onPressEnter = this.onPressEnter.bind(this);
     this.setNewChange = this.setNewChange.bind(this);
     this.confirmOrder = this.confirmOrder.bind(this);
+    this.clearQCcode = this.clearQCcode.bind(this);
+    this.QCcodeChange = this.QCcodeChange.bind(this);
+    this.selectRechargeRccount = this.selectRechargeRccount.bind(this);
     this.state = {
       // //订单号
       // orderno: "",
+      //二维码码
+      QCcode,
       //POS商户号
-      posmerchantno: "",
+      posmerchantno,
       //pos小票上的订单号
-      posorderno: "",
+      posorderno,
       //POS终端号
-      postermno: "",
+      postermno,
       //单子ID
-      serviceid: "",
+      //serviceid: "",
       //支付金额
-      amount:"",
+      amount,
       //支付状态
-      paystatus:"",
+      paystatus,
+      rechargeRccount,
 
     }
   }
@@ -55,6 +75,8 @@ class RepairPayForm extends React.Component{
         serviceid:this.props.customerDetalis.serviceid,
       };
       this.confirmOrder(reqData);
+    }else{
+      message.error("数据格式不对，请重新扫码");
     }
   }
 
@@ -66,14 +88,21 @@ class RepairPayForm extends React.Component{
     //   posorderno,
     //   serviceid:this.props.customerDetalis.serviceid,
     // };
+    let {amount,paystatus} = this.state;
     request({
       url:api.chargemoneyBycer,
       data:reqData
     }).then(({data})=>{
-      if(data.amount==0){
+      data = {
+        amount:100,paystatus:"03"
+      };
+      if(isEmpty(data)||data.amount==0){
         message.info("该支付订单不存在！请重试重新扫描");
       }else{
-
+        amount = data.amount;
+        paystatus = data.paystatus;
+        this.setNewChange({amount,paystatus});
+        message.success("获取数据成功！");
       }
     })
   }
@@ -90,6 +119,39 @@ class RepairPayForm extends React.Component{
 
   }
 
+  clearQCcode(){
+    let newState = {
+      // //订单号
+      // orderno: "",
+      //二维码码
+      QCcode:"",
+      //POS商户号
+      posmerchantno: "",
+      //pos小票上的订单号
+      posorderno: "",
+      //POS终端号
+      postermno: "",
+      //单子ID
+      //serviceid: "",
+      //支付金额
+      amount:"",
+      //支付状态
+      paystatus:"",
+
+    };
+
+    this.setNewChange({...newState});
+  }
+
+  QCcodeChange(e){
+    let {QCcode} = this.state;
+    QCcode = e.target.value;
+    this.setNewChange({QCcode});
+  }
+
+  selectRechargeRccount(value){
+    this.setNewChange({rechargeRccount:value});
+  }
   render(){
 
     return (
@@ -100,9 +162,9 @@ class RepairPayForm extends React.Component{
               <FormItem
                 label="充值账户:"
               >
-                <Select placeholder="请选择" defaultValue="emei" >
-                  <Option key="emei">生美充值余额</Option>
-                  <Option key="shengmei">医美充值余额</Option>
+                <Select placeholder="请选择" defaultValue="emei" value={this.state.rechargeRccount} onChange={this.selectRechargeRccount.bind(this)}>
+                  <Option key="1">生美充值余额</Option>
+                  <Option key="4">医美充值余额</Option>
                 </Select>
               </FormItem>
             </Col>
@@ -153,8 +215,8 @@ class RepairPayForm extends React.Component{
               <FormItem
                 label="扫描枪:"
               >
-                <Input style={{ color: 'rgb(128,128,128)' }} onPressEnter={this.onPressEnter} type="password" placeholder="扫描成功后自动显示/输入"  />
-                <Button type="primary">重新扫描</Button>
+                <Input style={{ color: 'rgb(128,128,128)' }} onPressEnter={this.onPressEnter} type="password" placeholder="扫描成功后自动显示/输入" onChange={this.QCcodeChange}  value={this.state.QCcode}/>
+                <Button type="primary" onClick={this.clearQCcode}>重新扫描</Button>
               </FormItem>
             </Col>
 

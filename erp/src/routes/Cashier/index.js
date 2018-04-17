@@ -29,7 +29,12 @@ const Cashier = ({
     const Buy = dynamic({
         app,
         component: () => import('./Buy'),
-    })
+    });
+    //开卡
+    const OpenCard = dynamic({
+        app,
+        component: () => import('./OpenCard'),
+    });
     return (
         <Layout>
             <Sider width={200} style={{ background: '#fff' }}>
@@ -47,19 +52,20 @@ const Cashier = ({
             </Sider>
             <Layout style={{ padding: '0 24px 24px' }}>
                 <Bread location={location}>
-                   
+
                 </Bread>
                 <Content style={{ background: 'rgb(245,245,245)', margin: 0, minHeight: 560 }}>
-                <Switch>
-                    <Route exact path={match.url + "/storeService"} component={StoreService} />
-                    <Route exact path={match.url + "/pay"} component={Pay} />
-                    <Route exact path={match.url + "/repairPay"} component={RepairPay} />
-                    <Route exact path={match.url + "/buy"} component={Buy} />
-                </Switch>
+                    <Switch>
+                        <Route exact path={match.url + "/storeService"} component={StoreService} />
+                        <Route exact path={match.url + "/pay"} component={Pay} />
+                        <Route exact path={match.url + "/repairPay"} component={RepairPay} />
+                        <Route exact path={match.url + "/buy"} component={Buy} />
+                        <Route exact path={match.url + "/openCard"} component={OpenCard} />
+                    </Switch>
                 </Content>
             </Layout>
-        </Layout>       
-        
+        </Layout>
+
     )
 }
 

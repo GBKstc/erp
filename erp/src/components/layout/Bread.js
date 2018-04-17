@@ -1,5 +1,5 @@
 import React from 'react'
-import { Breadcrumb, Icon } from 'antd'
+import { Breadcrumb, Icon, Row, Col } from 'antd'
 import { Link } from 'dva/router';
 import { connect } from 'dva';
 
@@ -45,14 +45,19 @@ const Bread = ({location}) => {
       name: '购买',
       router: '/cashier/buy',
       parentId:2,
+    }, {
+      id: 8,
+      name: '开卡',
+      router: '/cashier/openCard',
+      parentId: 2,
     },
-    
+
   ]
 
- 
+
 
   // 递归查找父级
-  
+
   const createBread = function (pathName,pathList = []){
     let path = Path.find((item)=>item.router===pathName);
     pathList.unshift(<Breadcrumb.Item key={path.id}><Link to={path.router}>{path.name}</Link></Breadcrumb.Item>)
@@ -67,9 +72,16 @@ const Bread = ({location}) => {
   const breads = createBread(pathname);
   return (
     <div className={styles.bread}>
-      <Breadcrumb>
-        {breads}
-      </Breadcrumb>
+      <Row type="flex">
+        <Col>{"所在位置："}&nbsp;</Col>
+        <Col>
+          <Breadcrumb>
+            {breads}
+          </Breadcrumb>
+        </Col>
+      </Row>
+
+
     </div>
   )
 }

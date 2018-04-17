@@ -182,6 +182,23 @@ const Cashier = {
         "introduce": undefined,
         "introduce_proportion": null
       }],
+    },
+    repairPayState:{
+      //二维码码
+      QCcode:"",
+      //POS商户号
+      posmerchantno: "",
+      //pos小票上的订单号
+      posorderno: "",
+      //POS终端号
+      postermno: "",
+      //单子ID
+      //serviceid: "",
+      //支付金额
+      amount:"",
+      //支付状态
+      paystatus:"",
+      rechargeRccount:"1",
     }
   },
   reducers: {

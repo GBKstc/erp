@@ -134,15 +134,40 @@ function cpy(o){
     return res;
 }
 
-/**
- * 删除对象内空属性
- * @returns {*}
- */
-const removeEmpty = (obj) =>
-  Object.entries(obj).forEach(([key, val]) => {
-    if (val && typeof val === 'object') removeEmpty(val)
-    else if (val == null) delete obj[key]
-  });
+// /**
+//  * 删除对象内空属性
+//  * @returns {*}
+//  */
+// const removeEmpty = (obj) =>
+//   Object.entries(obj).forEach(([key, val]) => {
+//     if (val && typeof val === 'object') removeEmpty(val)
+//     else if (val == null) delete obj[key]
+//   });
+
+// /**
+//  * 求数组重复值
+//  * @returns {*}
+//  */
+function intersect () {  //集合取交集
+  var result = new Array();
+  var obj = {};
+  for (var i = 0; i < arguments.length; i++) {
+    for (var j = 0; j < arguments[i].length; j++) {
+      var str = arguments[i][j];
+      if (!obj[str]) {
+        obj[str] = 1;
+      }
+      else {
+        obj[str]++;
+        if (obj[str] == arguments.length)
+        {
+          result.push(str);
+        }
+      }//end else
+    }//end for j
+  }//end for i
+  return result;
+}
 
 /**cookic**/
 /**
@@ -256,7 +281,7 @@ module.exports = {
     format_str,
     unformat_str,
     cpy,
-    removeEmpty,
+   // removeEmpty,
     money2Big,
 
     SetCookie,

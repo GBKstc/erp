@@ -15,9 +15,10 @@ module.exports = {
     findDepStroe:'/erp-set/user/findDepStroe',//获取门店列表
     findDepStroeStaff:'/erp-set/user/findUser',//获取门店店员
     recharge:'/cashier/service/card/recharge',//支付接口
-    paystatusCheck:'/cashier/service/recharge/paystatus/check',//支付接口
+    paystatusCheck:'/cashier/service/recharge/paystatus/check',//支付状态验证接口
 
 
     chargemoneyBycer:'/cashier/service/supplement/chargemoney/bycer',//补充值验证接口
+    supplementRecharge:'/cashier/service/supplementrecharge',//补充值接口
   },
 }

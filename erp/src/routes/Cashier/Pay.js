@@ -1,8 +1,7 @@
 import React from 'react';
 import { connect } from 'dva';
-import {Cashier} from '../../components';
+import Cashier from '../../components/Cashier';
 import {message} from 'antd';
-
 import {config,request,variable} from '../../utils';
 const {isEmpty,removeEmpty}  = variable;
 const { PayCustomerDetalis, PayTable, PayForm, PayMarket, PayButton, PayModal} = Cashier;
@@ -202,8 +201,6 @@ class Pay extends React.Component{
       })
     }
 
-
-
     render(){
         return (
             <div>
@@ -212,7 +209,7 @@ class Pay extends React.Component{
                 <PayForm onChange={this.onChange.bind(this,"payForm")}/>
                 <PayMarket onChange={this.onChange.bind(this,"payMarket")}/>
                 <PayButton onClick={this.onClick} />
-                <PayModal />
+                {/* <BaseButton onClick={this.onClick}/> */}
             </div>
         )
     }

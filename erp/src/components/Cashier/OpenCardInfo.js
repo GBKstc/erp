@@ -4,6 +4,7 @@ import {config,request,variable} from '../../utils';
 import { Link } from 'dva/router';
 import BaseBox from '../BaseBox';
 import React from 'react';
+import * as styles from './OpenCardInfo.less';
 
 const {api} = config;
 const Option = Select.Option;
@@ -27,7 +28,7 @@ const invertCharge = {
   "108":false,
 };
 
-class PayForm extends React.Component{
+class OpenCardInfo extends React.Component{
     constructor(props){
         super(props);
         //console.log(this);
@@ -305,57 +306,101 @@ class PayForm extends React.Component{
         }
 
         return (
-            <BaseBox >
-                <Row>
-                    <Form layout='vertical' style={{width:'100%'}}>
-                        <Col span={6}>
+            <BaseBox title="开卡信息">
+                <Form layout='vertical' style={{width:'100%'}}>
+                    <Row type="flex" justify="space-between">
+                        <Col span={5}>
                             <FormItem
-                                label="充值账户:"
+                                label="卡等级:"
                             >
-                                <Select placeholder="请选择" defaultValue="emei"  value={this.state.rechargeRccount} onChange={this.onChange.bind(this,"rechargeRccount")}>
+                                <Select placeholder="请选择" >
                                     <Option key="emei">生美充值余额</Option>
                                     <Option key="shengmei">医美充值余额</Option>
                                 </Select>
                             </FormItem>
                         </Col>
-                        <Col span={6}>
+                        <Col span={5}>
                             <FormItem
-                                label="充值金额:"
-                                help={this.state.bigNum}
+                                label="卡号:"
                             >
-                                <InputNumber disabled={invertCharge[this.state.pay.type]} min={0} step={0.01} placeholder="请输入" value={this.state.pay.payamount?this.state.pay.payamount:0}  onChange={this.onChange.bind(this,'payamount')} />
-                            </FormItem>
-                        </Col>
-                        <Col span={6}>
-                            <FormItem
-                                label="最低充值金额/元:"
-                            >
-                                <Input disabled={true} placeholder="input placeholder" value={this.props.customerDetalis.minrecharge?this.props.customerDetalis.minrecharge:0}/>
-                            </FormItem>
-                        </Col>
-                    </Form>
-                </Row>
-                <Row>
-                    <Form layout='vertical' style={{width:'100%'}}>
-                        <Col span={6}>
-                            <FormItem
-                                label="支付方式:"
-                            >
-                                <Select onSelect={this.onChange.bind(this,'type')} value={this.state.pay.type}>
-                                    {payTypeListOption}
+                                <Select placeholder="请选择" >
+                                    <Option key="emei">生美充值余额</Option>
+                                    <Option key="shengmei">医美充值余额</Option>
                                 </Select>
                             </FormItem>
                         </Col>
-                        <Col span={6}>
+                        <Col span={5}>
                             <FormItem
-                                label="支付凭证:"
-                                help={this.state.verifyInfo.voucher}
+                                label="支付方式:"
                             >
-                                <Input value={this.state.pay.cer} onBlur={this.onBlur} onChange={this.onChange.bind(this,'voucher')} disabled={!this.state.selectPayType.maxlength} placeholder={this.state.selectPayType.maxlength?`凭证长度在`+this.state.selectPayType.minlength+"和"+this.state.selectPayType.maxlength+"之间":null} />
+                                <Select placeholder="请选择" >
+                                    <Option key="emei">生美充值余额</Option>
+                                    <Option key="shengmei">医美充值余额</Option>
+                                </Select>
                             </FormItem>
                         </Col>
-
-                    </Form>
+                        <Col span={5}>
+                            <FormItem
+                                label="支付凭证:"
+                            >
+                                <Select placeholder="请选择" >
+                                    <Option key="emei">生美充值余额</Option>
+                                    <Option key="shengmei">医美充值余额</Option>
+                                </Select>
+                            </FormItem>
+                        </Col>
+                    </Row>
+                </Form>
+                <Row type="flex" justify="space-between">
+                    <Col span={5}>
+                        <Row>
+                            <Col span={24}>
+                                <div className={styles.title}>
+                                    应支付金额(元)：
+                                </div>
+                            </Col>
+                        </Row>
+                        <Row>
+                             <div className={styles.num}>
+                                12000
+                            </div>
+                        </Row>
+                    </Col>
+                    <Col span={5}>
+                        <Row>
+                            <Col span={24}>
+                                <div className={styles.title}>
+                                    生美充值金额：
+                                </div>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col span={24}>
+                                <div className={styles.num}>
+                                    12000
+                                </div>
+                            </Col>
+                        </Row>
+                    </Col>
+                    <Col span={5}>
+                        <Row>
+                            <Col span={24}>
+                                <div className={styles.title}>
+                                    医美充值金额：
+                                </div>
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col span={24}>
+                                <div className={styles.num}>
+                                    12000
+                                </div>
+                            </Col>
+                        </Row>
+                    </Col>
+                    <Col span={5}>
+                        
+                    </Col>
                 </Row>
 
             </BaseBox>
@@ -364,4 +409,4 @@ class PayForm extends React.Component{
     }
 }
 
-export default connect(({cashier}) => (cashier))(PayForm);
+export default connect(({cashier}) => (cashier))(OpenCardInfo);

@@ -1,16 +1,38 @@
 @import "../themes/base";
+.box{
+  border-radius: 8px;
+  overflow:hidden;
+  position: relative;
+  box-shadow: 0 5px 7px 0 rgba(18,57,70,0.08);
+  background-color: rgb(255, 255, 255);
+  margin-top: 20px;
+  .baseBox{
+    padding: 0 40px 40px 40px;
 
-.baseBox{
-    background-color: rgb(255, 255, 255);
-    margin-top: 20px;
-    color: rgb(0, 0, 0);
-    
-    .title{
-        border-left:solid 3px rgb(0, 0, 0);
-        background-color: @Sbase-color;
-    }
+  }
 }
+
+.title{
+  margin-top: 20px;
+  padding-bottom: 45px;
+  font-size: 20px;
+  line-height: 20px;
+}
+.title:after{
+  display: block;
+  content:'';
+  width: 30px;
+  height: 2px;
+  border-radius: 4px;
+  background-image: linear-gradient(-134deg, #F88497 0%, #FFA4E3 100%);
+  margin-top: 6px;
+  /*position:absolute;*/
+}
+
+.content{
+
+}
+
 .dispalyNone{
     display: none;
-    
 }

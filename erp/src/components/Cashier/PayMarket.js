@@ -356,7 +356,7 @@ class PayMarket extends React.Component{
       <Option value={item.id} key={item.id}>{item.name}</Option>
     ));
     return (
-      <BaseBox >
+      <BaseBox title="添加部门">
         <Row>
           <Form layout='vertical' style={{ width: '100%' }}>
             <Col span={6}>
@@ -364,21 +364,27 @@ class PayMarket extends React.Component{
                 label="销售部门:"
                 help={this.state.departInfoHelp}
               >
-                <Input
-                  type="text"
-                  disabled={true}
-                  value={this.props.logininfo.departname}
-                  style={{ width: '65%', marginRight: '3%' }}
-                />
-                <InputNumber
-                  value={this.state.depart_info.sale_proportion}
-                  min={0}
-                  max={100}
-                  formatter={value => `${value}%`}
-                  parser={value => value.replace('%', '')}
-                  onChange={this.onChange.bind(this, "departInfoSale")}
-                  onBlur={this.onBlur}
-                />
+                <Row>
+                  <Col span={12}>
+                    <Input
+                      type="text"
+                      disabled={true}
+                      value={this.props.logininfo.departname}
+                    />
+                  </Col>
+                  <Col span={8} style={{marginLeft:"10px"}}>
+                    <InputNumber
+                      value={this.state.depart_info.sale_proportion}
+                      min={0}
+                      max={100}
+                      formatter={value => `${value}%`}
+                      parser={value => value.replace('%', '')}
+                      onChange={this.onChange.bind(this, "departInfoSale")}
+                      onBlur={this.onBlur}
+                    />
+                  </Col>
+                  <Col span={4}></Col>
+                </Row>
               </FormItem>
             </Col>
             <Col span={6}>
@@ -396,23 +402,29 @@ class PayMarket extends React.Component{
                 <FormItem
                   label="介绍部门:"
                 >
-                  <Select
-                    value={this.state.depart_info.introduce}
-                    style={{ width: '32%' }}
-                    onChange={this.onChange.bind(this,"departInfoIntroduce")}
-                    allowClear={true}
-                  >
-                    {introduceOpation}
-                  </Select>
-                  <InputNumber
-                    value={this.state.depart_info.introduce_proportion}
-                    min={0}
-                    max={100}
-                    formatter={value => `${value}%`}
-                    parser={value => value.replace('%', '')}
-                    onChange={this.onChange.bind(this,'departInfoIntroduceProportion')}
-                    onBlur={this.onBlur}
-                  />
+                  <Row>
+                    <Col span={12}>
+                      <Select
+                        value={this.state.depart_info.introduce}
+                        onChange={this.onChange.bind(this,"departInfoIntroduce")}
+                        allowClear={true}
+                      >
+                        {introduceOpation}
+                      </Select>
+                    </Col>
+                    <Col span={8} style={{marginLeft:"10px"}}>
+                      <InputNumber
+                        value={this.state.depart_info.introduce_proportion}
+                        min={0}
+                        max={100}
+                        formatter={value => `${value}%`}
+                        parser={value => value.replace('%', '')}
+                        onChange={this.onChange.bind(this,'departInfoIntroduceProportion')}
+                        onBlur={this.onBlur}
+                      />
+                    </Col>
+                    <Col span={4}></Col>
+                  </Row>
                 </FormItem>
               </Col>
               <Col span={6}>
@@ -425,7 +437,7 @@ class PayMarket extends React.Component{
           </Row>
         ):(
           <Row>
-            <Col offset={1}>
+            <Col>
               <Button type="primary" onClick={this.onClick}>添加介绍部门</Button>
             </Col>
           </Row>

@@ -14,9 +14,14 @@ import BuySelectBox from './BuySelectBox';
 import BuySelectModal from './BuySelectModal';
 import BuyButton from './BuyButton';
 
+//开卡
+import OpenCardInfo from "./OpenCardInfo";
+import OpenCardDiscount from "./OpenCardDiscount";
+import OpenCardTable from "./OpenCardTable";
 
 
-export { 
+
+module.exports =  { 
     CustomerList, 
     CustomerDetalis, 
     PayCustomerDetalis, 
@@ -27,5 +32,8 @@ export {
     PayModal,
     BuySelectBox,
     BuySelectModal,
-    BuyButton
+    BuyButton,
+    OpenCardInfo,
+    OpenCardDiscount,
+    OpenCardTable
 }
