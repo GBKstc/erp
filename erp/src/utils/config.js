@@ -17,8 +17,11 @@ module.exports = {
     recharge:'/cashier/service/card/recharge',//支付接口
     paystatusCheck:'/cashier/service/recharge/paystatus/check',//支付状态验证接口
 
-
+    //补充值
     chargemoneyBycer:'/cashier/service/supplement/chargemoney/bycer',//补充值验证接口
     supplementRecharge:'/cashier/service/supplementrecharge',//补充值接口
+    //开卡
+    opencardRanks: '/cashier/opencard/ranks',//获取卡等级
+    carDrankGetById:'/erp-base/cardrank/getById',//获取卡等级对应卡信息
   },
 }

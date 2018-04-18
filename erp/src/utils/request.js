@@ -10,24 +10,29 @@ import qs from 'qs';
 //const APIV1 = 'http://192.168.18.17/cashier';
 let APIV1 = 'http://192.168.18.163:8384';
 let APIV2 = 'http://192.168.18.163:8484';
+let APIV3 = 'http://192.168.18.163:8584';
+
+// let APIV1 = 'http://192.168.18.17';
+// let APIV2 = 'http://192.168.18.17';
+// let APIV3 = 'http://192.168.18.17';
 //const APIV1 = '/cashier';
 
 
 export default function request({ url, data, method="post"}) {
   let newOptions ={};
-  if(url.indexOf('localhost')>0){
-    url = String(url);
+  if (url.indexOf('erp-base')>0){
+    url = APIV3+String(url);
     newOptions = {
       headers: {
         // Accept: 'application/json',
         //'Content-Type': 'application/json'
-        'Content-Type': 'application/x-www-form-urlencoded'
+        'Content-Type': 'application/json'
       },
       method: method.toLowerCase(),
       mode:'cors',
       credentials:'include',
       withCredentials:true,
-      body:qs.stringify(data)
+      body: isEmpty(data) ? "{}" : JSON.stringify(data)
     };
   } else if(url.indexOf('erp-set')>0){
     url = APIV2+String(url);

@@ -7,48 +7,49 @@ import React from 'react';
 
 const columnsGoods  = [{
     title: '物品编号',
-    dataIndex: 'orderno',
-    key: 'orderno',
+    dataIndex: 'code',
+    key: 'code',
   }, {
     title: '物品名称',
-    dataIndex: 'sonaccountName',
-    key: 'sonaccountName',
+    dataIndex: 'name',
+    key: 'name',
   }, {
     title: '赠送数量',
-    dataIndex: 'money',
-    key: 'money',
+    dataIndex: 'count',
+    key: 'count',
   }
 ];
 
 const columnsItem  = [{
     title: '项目编号',
-    dataIndex: 'orderno',
-    key: 'orderno',
+  dataIndex: 'code',
+  key: 'code',
   }, {
     title: '项目名称',
-    dataIndex: 'sonaccountName',
-    key: 'sonaccountName',
+    dataIndex: 'name',
+    key: 'name',
   }, {
     title: '赠送数量',
-    dataIndex: 'money',
-    key: 'money',
+    dataIndex: 'count',
+    key: 'count',
   }
 ];
-class OpenCardTable extends React.Component{
-    constructor(props){
-        super(props);
-    }
+const OpenCardTable = ({ title, dataSource }) => {
+// class OpenCardTable extends React.Component{
+//     constructor(props){
+//         super(props);
+//     }
 
 
-    render(){
-        const columns = this.props.title=="赠送物品"?columnsGoods:columnsItem;
+    // render(){
+        const columns = title=="赠送物品"?columnsGoods:columnsItem;
         return (
-            <BaseBox title={this.props.title?this.props.title:"模块"}>
-                 <Table bordered dataSource={null} size="small" columns={columns} pagination={false} />
+            <BaseBox title={title?title:"模块"}>
+            <Table bordered dataSource={dataSource} size="small" columns={columns} pagination={false} />
             </BaseBox>
 
         )
-    }
+    // }
 }
 
 export default connect()(OpenCardTable);

@@ -199,6 +199,12 @@ const Cashier = {
       //支付状态
       paystatus:"",
       rechargeRccount:"1",
+    },
+    openCardState:{
+      //卡等级详细信息
+      cardRanksInfoData:{},
+      //卡等级ID
+      // selectCardRankId:null
     }
   },
   reducers: {
@@ -238,7 +244,7 @@ const Cashier = {
         key,
       }
     }){
-      console.log(data,key);
+      //console.log(data,key);
       state[key] = data;
       return {
         ...state,
@@ -273,6 +279,18 @@ const Cashier = {
         ...state,
         isSelect
       };
+    },
+
+    //开卡
+    saveCardRanksInfo(state,{
+      payload: {
+        data
+      }
+    }){
+      state.openCardState.cardRanksInfoData = data;
+      return {
+        ...state,
+      }
     }
   },
   effects: {

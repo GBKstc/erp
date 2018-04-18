@@ -1,5 +1,6 @@
 import { connect } from 'dva';
 import {Cashier} from '../../components';
+import BaseButton from '../../components/BaseUI/BaseButton';
 import React from 'react';
 import {message} from "antd";
 import {config,request,variable} from '../../utils';
@@ -12,12 +13,11 @@ const { PayCustomerDetalis, PayTable, RepairPayForm, PayMarket, PayButton, PayMo
 class RepairPay extends React.Component{
   constructor(props){
     super(props);
-    console.log(props);
+    //console.log(props);
     this.onChange = this.onChange.bind(this);
     this.setNewChange = this.setNewChange.bind(this);
     this.onClick = this.onClick.bind(this);
     this.repairPayRequest = this.repairPayRequest.bind(this);
-
       //repairPay 数据
     this.oldState = this.props.repairPayState;
       //payMarket模块数据
@@ -26,7 +26,7 @@ class RepairPay extends React.Component{
   }
 
   onChange(key,newState){
-    console.log(key,newState);
+    //console.log(key,newState);
     switch (key) {
       case "payMarket":
         this.oldMarketState = Object.assign({},this.oldState,newState);
@@ -40,7 +40,7 @@ class RepairPay extends React.Component{
 
 
   setNewChange(){
-    console.log(this.oldState,this.oldMarketState);
+    //console.log(this.oldState,this.oldMarketState);
     this.props.dispatch({
       type: 'cashier/saveData',
       payload: {
@@ -153,16 +153,18 @@ class RepairPay extends React.Component{
       // ],
       //payMethod:'offline'
     };
+    
     request({
-      url:api.supplementRecharge,
-      data:reqData
-    }).then(({data,status,msg})=>{
-      if(isEmpty(data)&&status!=200){
+      url: api.supplementRecharge,
+      data: reqData
+    }).then(({ data, status, msg }) => {
+      if (isEmpty(data) && status != 200) {
         message.error(msg);
-      }else{
+      } else {
         message.success("充值成功！")
       }
     })
+    
   }
 
   render(){
@@ -172,7 +174,7 @@ class RepairPay extends React.Component{
         <PayTable/>
         <RepairPayForm onChange={this.onChange.bind(this,"repairPayForm")}/>
         <PayMarket onChange={this.onChange.bind(this,"payMarket")}/>
-        <PayButton onClick={this.onClick}/>
+        <BaseButton onClick={this.onClick} okText="确认充值"/>
         <PayModal />
       </div>
     );
