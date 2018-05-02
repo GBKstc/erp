@@ -26,7 +26,7 @@ const App = {
       const {
         data
       } = yield call(request, {
-        url: 'http://localhost/erp-set/index/login',
+        url: '/erp-set/index/login',
         method: 'post',
         data: param
       });

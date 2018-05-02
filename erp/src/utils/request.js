@@ -8,13 +8,13 @@ import qs from 'qs';
 
 //const APIV1 = 'http://localhost/cashier';
 //const APIV1 = 'http://192.168.18.17/cashier';
-let APIV1 = 'http://192.168.18.163:8384';
-let APIV2 = 'http://192.168.18.163:8484';
-let APIV3 = 'http://192.168.18.163:8584';
+// let APIV1 = 'http://192.168.18.163:8384';
+// let APIV2 = 'http://192.168.18.163:8484';
+// let APIV3 = 'http://192.168.18.163:8584';
 
-// let APIV1 = 'http://192.168.18.17';
-// let APIV2 = 'http://192.168.18.17';
-// let APIV3 = 'http://192.168.18.17';
+let APIV1 = 'http://192.168.18.17';
+let APIV2 = 'http://192.168.18.17';
+let APIV3 = 'http://192.168.18.17';
 //const APIV1 = '/cashier';
 
 
@@ -63,19 +63,7 @@ export default function request({ url, data, method="post"}) {
       body:isEmpty(data)?"{}":JSON.stringify(data)
     };
   }
-  // url = APIV1+String(url);
-  // let newOptions = {
-  //   headers: {
-  //     // Accept: 'application/json',
-  //     'Content-Type': 'application/json'
-  //     //'Content-Type': 'application/x-www-form-urlencoded'
-  //   },
-  //   method: method.toLowerCase(),
-  //   mode:'cors',
-  //   credentials:'include',
-  //   withCredentials:true,
-  //   body:JSON.stringify(data)
-  // };
+
   return fetch(url, newOptions)
     .then(response=>{
       if (response.status >= 200 && response.status < 300) {
